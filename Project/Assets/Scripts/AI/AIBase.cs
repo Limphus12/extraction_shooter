@@ -11,11 +11,9 @@ namespace com.limphus.extraction_shooter
         protected NavMeshAgent agent { get; private set; }
         protected Vector3 originPosition;
 
-
-        private void SetDestination()
+        protected void SetDestination(Vector3 destination)
         {
 
         }
-
     }
 }
