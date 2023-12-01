@@ -41,9 +41,9 @@ namespace com.limphus.extraction_shooter
 
             if (!firearm) return;
 
-            firearm.OnStartFire += Firearm_OnStartFire;
-            firearm.OnFire += Firearm_OnFire;
-            firearm.OnEndFire += Firearm_OnEndFire;
+            firearm.OnStartAttack += Firearm_OnStartFire;
+            firearm.OnAttack += Firearm_OnFire;
+            firearm.OnEndAttack += Firearm_OnEndFire;
             firearm.OnEnvHit += Firearm_OnEnvHit;
             firearm.OnEnemyHit += Firearm_OnEnemyHit;
         }
@@ -54,9 +54,9 @@ namespace com.limphus.extraction_shooter
 
             if (!firearm) return;
 
-            firearm.OnStartFire -= Firearm_OnStartFire;
-            firearm.OnFire -= Firearm_OnFire;
-            firearm.OnEndFire -= Firearm_OnEndFire;
+            firearm.OnStartAttack -= Firearm_OnStartFire;
+            firearm.OnAttack -= Firearm_OnFire;
+            firearm.OnEndAttack -= Firearm_OnEndFire;
             firearm.OnEnvHit -= Firearm_OnEnvHit;
             firearm.OnEnemyHit -= Firearm_OnEnemyHit;
         }

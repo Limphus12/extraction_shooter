@@ -22,7 +22,7 @@ namespace com.limphus.extraction_shooter
 
         //private FirearmFunctionAnimation firearmFunctionAnimation;
 
-        private bool isFiring;
+        private bool isAttacking;
 
         private Transform playerCameraTransform;
 
@@ -30,7 +30,7 @@ namespace com.limphus.extraction_shooter
         //public event EventHandler<Events.OnIntChangedEventArgs> OnHealthChanged;
         //public event EventHandler<EventArgs> OnHealthDepleted, OnHealthReplenished;
 
-        public event EventHandler<EventArgs> OnStartFire, OnFire, OnEndFire;
+        public event EventHandler<EventArgs> OnStartAttack, OnAttack, OnEndAttack;
         public event EventHandler<Events.OnRaycastHitEventArgs> OnEnvHit, OnEnemyHit;
 
         private void Awake()
@@ -56,43 +56,43 @@ namespace com.limphus.extraction_shooter
         private void Inputs()
         {
             //if we press the rmb, and we're not already firing
-            if (Input.GetMouseButtonDown(0) && !isFiring)
+            if (Input.GetMouseButtonDown(0) && !isAttacking)
             {
-                StartFire();
+                StartAttack();
             }
         }
 
-        private void StartFire()
+        private void StartAttack()
         {
-            isFiring = true;
+            isAttacking = true;
 
-            OnStartFire?.Invoke(this, new EventArgs { });
+            OnStartAttack?.Invoke(this, new EventArgs { });
 
-            Fire();
+            Attack();
         }
 
-        private void Fire()
+        private void Attack()
         {
-            OnFire?.Invoke(this, new EventArgs { });
+            OnAttack?.Invoke(this, new EventArgs { });
 
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit hit, Mathf.Infinity))
             {
                 //check if we hit an enemy or not
-                    //if we did, fire off an event saying so
-                    //oh, and do damage stuff ig
+                //if we did, fire off an event saying so
+                //oh, and do damage stuff ig
 
                 //otherwise if we didn't
-                    //just fire an event saying that we didn't!
+                //just fire an event saying that we didn't!
             }
 
-            Invoke(nameof(EndFire), 1f / rof);
+            Invoke(nameof(EndAttack), 1f / rof);
         }
 
-        private void EndFire()
+        private void EndAttack()
         {
-            OnEndFire?.Invoke(this, new EventArgs { });
+            OnEndAttack?.Invoke(this, new EventArgs { });
 
-            isFiring = false;
+            isAttacking = false;
         }
     }
 }
