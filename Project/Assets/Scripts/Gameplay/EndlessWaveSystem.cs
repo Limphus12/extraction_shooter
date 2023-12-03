@@ -37,8 +37,6 @@ namespace com.limphus.extraction_shooter
 
         int waveNumber = 0; bool spawnedAllEnemies;
 
-        private WaveState currentWaveState;
-
         private void Awake()
         {
             //find all of the spawnpoints; we can do this via tags and a for loop

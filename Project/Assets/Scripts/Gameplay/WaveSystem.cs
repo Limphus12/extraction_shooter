@@ -13,14 +13,17 @@ namespace com.limphus.extraction_shooter
         {
             public Transform[] enemy;
             public int enemyCount;
+
+            [Tooltip("The rate (in seconds) that enemies are spawned")]
             public float spawnRate;
         }
 
-        public Wave[] waves;
-        int nextWave = 0;
+        [SerializeField] private Wave[] waves;
+        private int currentWave;
 
-        [SerializeField] private float timeBetweenWaves = 5f;
-        float waveCountDown;
+        [SerializeField] private float timeBetweenWaves = 30f;
+
+        private float waveCountDown;
 
         SpawnState state = SpawnState.COUNTING;
 
@@ -46,61 +49,50 @@ namespace com.limphus.extraction_shooter
             }
 
             //by the end of this, we should have a nice list of spawn points to use!
-        }
 
-        private void Start()
-        {
-            waveCountDown = timeBetweenWaves;
+            waveCountDown = timeBetweenWaves; //also init the wave countdown
         }
 
         private void Update()
         {
             CheckWave();
+            CheckEnemies();
+        }
+
+        private void CheckEnemies()
+        {
+            enemies.TrimExcess();
         }
 
         private void CheckWave()
         {
-            if (state == SpawnState.WAITING && !EnemyIsAlive()) WaveCompleted();
-
-            else return;
-
-            if (waveCountDown <= 0 && state != SpawnState.SPAWNING) StartCoroutine(SpawnWave(waves[nextWave]));
-
-            else waveCountDown -= Time.deltaTime;
-        }
-
-        private void WaveCompleted()
-        {
-            Debug.Log("Wave Completed");
-
-            state = SpawnState.COUNTING;
-            waveCountDown = timeBetweenWaves;
-
-            if (nextWave + 1 > waves.Length - 1)
+            //waiting state: check if there are any enemies left alive, and end the wave if there are none
+            //since we only go to the waiting state once we've spawned all enemies, this is fine; the logic makes sense
+            if (state == SpawnState.WAITING)
             {
-                nextWave = 0;
-                Debug.Log("ALL WAVES COMPLETE! Looping...");
+                if (!EnemyIsAlive()) EndWave();
+
+                else return;
             }
 
-            else nextWave++;
+            //if we're not in the spawning state, and we've reached the end of the wave countdown, start the spawning!
+            if (waveCountDown <= 0 && state != SpawnState.SPAWNING) StartCoroutine(SpawnWave(waves[currentWave]));
+
+            //if we're not in the spawning state (so ig we'd be in the counting state, then do the countdown till the next wave!
+            else waveCountDown -= Time.deltaTime;
         }
 
         private bool EnemyIsAlive()
         {
-            //need to redo this 
-
-
-
-
-
-
-            return true;
+            //simple check; see if we have any more enemies (since we're storing the AIBase class, it should (in the future) account for bosses and other enemy types)
+            return enemies.Count > 0;
         }
 
         private IEnumerator SpawnWave(Wave wave)
         {
             state = SpawnState.SPAWNING;
 
+            //loop to spawn all of the enemies over time
             for (int i = 0; i < wave.enemyCount; i++)
             {
                 SpawnEnemy();
@@ -108,6 +100,7 @@ namespace com.limphus.extraction_shooter
                 yield return new WaitForSeconds(wave.spawnRate);
             }
 
+            //once we've spawned them all, we enter the waiting state
             state = SpawnState.WAITING;
 
             yield break;
@@ -128,6 +121,29 @@ namespace com.limphus.extraction_shooter
             //WE CAN THEN MAKE SURE TO REMOVE IT FROM THE LIST
             //AND CALL A CHECK TO SEE IF THERE'S ANY MORE ENEMIES LEFT
             //THEN POTENTIALLY END THE ROUND
+
+            //OR, WE COULD JUST CHECK IF THE ENEMY GAME OBJECT IS NOT NULL, AND CLEAN UP THE LIST EVERY FRAME IG?
+        }
+
+        private void EndWave()
+        {
+            Debug.Log("Wave " + currentWave + 1 + " Completed");
+
+            state = SpawnState.COUNTING;
+
+            waveCountDown = timeBetweenWaves;
+
+            NextWave();
+        }
+
+        private void NextWave()
+        {
+            if (currentWave >= waves.Length - 1)
+            {
+                currentWave = 0; Debug.Log("ALL WAVES COMPLETE! Looping..."); //need to remove this loop thingy in the future, as we want inf. waves
+            }
+
+            else currentWave++;
         }
     }
 }
