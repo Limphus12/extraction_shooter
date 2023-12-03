@@ -5,6 +5,8 @@ using com.limphus.utilities;
 
 namespace com.limphus.extraction_shooter
 {
+    public enum SpawnPointType { REGULAR, TURRET, BOSS }
+
     public class SpawnPoint : MonoBehaviour
     {
         //in the future, we wanna be able to spawn different enemies
@@ -12,23 +14,19 @@ namespace com.limphus.extraction_shooter
         [SerializeField] private GameObject enemyPrefab;
 
         //we can determine if bosses should be able to spawn at this particular point
-        [SerializeField] private bool canSpawnBoss;
+        [SerializeField] private SpawnPointType type;
 
-        //[SerializeField] private float spawnRadius;
+        public SpawnPointType GetSpawnPointType() => type;
 
-        public bool CanSpawnBoss()
-        {
-            return canSpawnBoss;
-        }
-
-        public void Spawn()
+        public GameObject Spawn()
         {
             //spawn an enemy
 
             //TODO: we can spawn it in a lil radius around the point
             //gotta calc a navmesh pos tho
 
-            Instantiate(enemyPrefab, transform.position, transform.rotation);
+            GameObject enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
+            return enemy;
         }
 
         private void OnDrawGizmos()

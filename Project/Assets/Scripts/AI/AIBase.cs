@@ -22,6 +22,8 @@ namespace com.limphus.extraction_shooter
         private Vector3 targetPosition, previousTargetPosition;
         private Transform targetTransform;
 
+        private bool isAttacking = false, canAttack = true;
+
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
@@ -31,8 +33,6 @@ namespace com.limphus.extraction_shooter
             InvokeRepeating(nameof(CheckDestination), 0f, 0.2f);
             InvokeRepeating(nameof(SetDestination), 0f, 0.2f);
         }
-
-        private bool isAttacking = false, canAttack = true;
 
         private void StartAttack()
         {

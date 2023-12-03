@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,9 @@ namespace com.limphus.extraction_shooter
         //a private list of spawn points; populate this in the awake/start method
         private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
 
-        int waveNumber = 0;
+        int waveNumber = 0; bool spawnedAllEnemies;
+
+        private WaveState currentWaveState;
 
         private void Awake()
         {
@@ -51,8 +54,24 @@ namespace com.limphus.extraction_shooter
             //by the end of this, we should have a nice list of spawn points to use!
         }
 
+        private void Update()
+        {
+            CheckWave();
+        }
+
+        private void CheckWave()
+        {
+            if (!spawnedAllEnemies)
+            {
+
+            }
+        }
+
         private void StartWave()
         {
+            waveNumber++; //increment the wave number; we'll start on wave 1, rather than 0 ig?
+            //we can then just use the exact no. for the UI stuff
+
 
         }
 
