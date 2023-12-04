@@ -28,7 +28,7 @@ namespace com.limphus.extraction_shooter
         SpawnState state = SpawnState.COUNTING;
 
         //gotta keep track of the current enemies
-        [SerializeField] private List<AIBase> enemies = new List<AIBase>();
+        private List<AIBase> enemies = new List<AIBase>();
 
         //a private list of spawn points; populate this in the awake/start method
         private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
@@ -64,7 +64,7 @@ namespace com.limphus.extraction_shooter
             {
                 case SpawnState.SPAWNING:
 
-                    //in the spawning state; don't bother doing anything
+                    //in the spawning state; don't bother doing anything ig?
 
                     break;
 
@@ -80,9 +80,9 @@ namespace com.limphus.extraction_shooter
                 case SpawnState.COUNTING:
 
                     //if we're not in the spawning state (so ig we'd be in the counting state), then do the countdown till the next wave!
-                    waveCountDown -= Time.deltaTime;
+                    waveCountDown -= Time.deltaTime; Debug.Log(Mathf.RoundToInt(waveCountDown));
 
-                    Debug.Log(Mathf.RoundToInt(waveCountDown));
+                    //TODO: add event for wave countdown
 
                     //if we're not in the spawning state, and we've reached the end of the wave countdown, start the spawning!
                     if (waveCountDown <= 0) StartCoroutine(SpawnWave(waves[currentWave]));
@@ -92,6 +92,15 @@ namespace com.limphus.extraction_shooter
                 default:
                     break;
             }
+        }
+
+        private void ChangeSpawnState(SpawnState newState)
+        {
+            if (state == newState) return;
+
+            //fire an event here, i.e. OnSpawnStateChanged()
+
+            state = newState;
         }
 
         private bool EnemyIsAlive()
@@ -107,7 +116,7 @@ namespace com.limphus.extraction_shooter
 
         private IEnumerator SpawnWave(Wave wave)
         {
-            state = SpawnState.SPAWNING;
+            ChangeSpawnState(SpawnState.SPAWNING);
 
             //loop to spawn all of the enemies over time
             for (int i = 0; i < wave.enemyCount; i++)
@@ -118,7 +127,7 @@ namespace com.limphus.extraction_shooter
             }
 
             //once we've spawned them all, we enter the waiting state
-            state = SpawnState.WAITING;
+            ChangeSpawnState(SpawnState.WAITING);
 
             yield break;
         }
@@ -144,9 +153,9 @@ namespace com.limphus.extraction_shooter
 
         private void EndWave()
         {
-            Debug.Log("Wave " + currentWave + 1 + " Completed");
+            Debug.Log("Wave " + (currentWave + 1) + " Completed");
 
-            state = SpawnState.COUNTING;
+            ChangeSpawnState(SpawnState.COUNTING);
 
             waveCountDown = timeBetweenWaves;
 
