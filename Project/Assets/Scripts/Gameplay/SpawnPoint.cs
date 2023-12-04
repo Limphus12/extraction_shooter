@@ -31,8 +31,8 @@ namespace com.limphus.extraction_shooter
 
         private void OnDrawGizmos()
         {
-            //Gizmos.color = Color.red;
-            //Gizmos.DrawWireSphere(transform.position, spawnRadius);
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position, 0.25f);
         }
     }
 }

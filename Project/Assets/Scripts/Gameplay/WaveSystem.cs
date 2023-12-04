@@ -11,7 +11,7 @@ namespace com.limphus.extraction_shooter
         [System.Serializable]
         public class Wave
         {
-            public Transform[] enemy;
+            [Tooltip("The amount of enemies that are spawned")]
             public int enemyCount;
 
             [Tooltip("The rate (in seconds) that enemies are spawned")]
@@ -28,7 +28,7 @@ namespace com.limphus.extraction_shooter
         SpawnState state = SpawnState.COUNTING;
 
         //gotta keep track of the current enemies
-        private List<AIBase> enemies = new List<AIBase>();
+        [SerializeField] private List<AIBase> enemies = new List<AIBase>();
 
         //a private list of spawn points; populate this in the awake/start method
         private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
@@ -50,40 +50,57 @@ namespace com.limphus.extraction_shooter
 
             //by the end of this, we should have a nice list of spawn points to use!
 
-            waveCountDown = timeBetweenWaves; //also init the wave countdown
+            waveCountDown = 5f; //also init the wave countdown
         }
 
         private void Update()
         {
             CheckWave();
-            CheckEnemies();
-        }
-
-        private void CheckEnemies()
-        {
-            enemies.TrimExcess();
         }
 
         private void CheckWave()
         {
-            //waiting state: check if there are any enemies left alive, and end the wave if there are none
-            //since we only go to the waiting state once we've spawned all enemies, this is fine; the logic makes sense
-            if (state == SpawnState.WAITING)
+            switch (state)
             {
-                if (!EnemyIsAlive()) EndWave();
+                case SpawnState.SPAWNING:
 
-                else return;
+                    //in the spawning state; don't bother doing anything
+
+                    break;
+
+                case SpawnState.WAITING:
+
+                    //waiting state: check if there are any enemies left alive, and end the wave if there are none
+                    //since we only go to the waiting state once we've spawned all enemies, this is fine; the logic makes sense
+                    if (!EnemyIsAlive()) EndWave();
+
+                    else return;
+
+                    break;
+                case SpawnState.COUNTING:
+
+                    //if we're not in the spawning state (so ig we'd be in the counting state), then do the countdown till the next wave!
+                    waveCountDown -= Time.deltaTime;
+
+                    Debug.Log(Mathf.RoundToInt(waveCountDown));
+
+                    //if we're not in the spawning state, and we've reached the end of the wave countdown, start the spawning!
+                    if (waveCountDown <= 0) StartCoroutine(SpawnWave(waves[currentWave]));
+
+                    break;
+
+                default:
+                    break;
             }
-
-            //if we're not in the spawning state, and we've reached the end of the wave countdown, start the spawning!
-            if (waveCountDown <= 0 && state != SpawnState.SPAWNING) StartCoroutine(SpawnWave(waves[currentWave]));
-
-            //if we're not in the spawning state (so ig we'd be in the counting state, then do the countdown till the next wave!
-            else waveCountDown -= Time.deltaTime;
         }
 
         private bool EnemyIsAlive()
         {
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (enemies[i] == null) enemies.RemoveAt(i);
+            }
+
             //simple check; see if we have any more enemies (since we're storing the AIBase class, it should (in the future) account for bosses and other enemy types)
             return enemies.Count > 0;
         }
