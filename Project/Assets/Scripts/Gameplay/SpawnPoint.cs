@@ -29,6 +29,8 @@ namespace com.limphus.extraction_shooter
             return enemy;
         }
 
+        //TODO: New Spawn Method with a struct for enemy stats i.e. speed, health, damage
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;

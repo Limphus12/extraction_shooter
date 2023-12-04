@@ -24,7 +24,7 @@ namespace com.limphus.extraction_shooter
 
         private bool isAttacking;
 
-        private Transform playerCameraTransform;
+        [SerializeField] private Transform playerCameraTransform;
 
         //event examples
         //public event EventHandler<Events.OnIntChangedEventArgs> OnHealthChanged;
@@ -77,13 +77,14 @@ namespace com.limphus.extraction_shooter
 
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit hit, Mathf.Infinity))
             {
-                //check if we hit an enemy or not
-                //if we did, fire off an event saying so
-                //oh, and do damage stuff ig
+                Debug.Log(hit.transform.gameObject.name);
 
-                //otherwise if we didn't
-                //just fire an event saying that we didn't!
+                IDamageable damageable = hit.transform.GetComponent<IDamageable>();
+
+                if (damageable != null) damageable.Damage(damage);
             }
+
+            else Debug.Log("Didn't Hit!");
 
             Invoke(nameof(EndAttack), 1f / rof);
         }

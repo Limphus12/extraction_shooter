@@ -34,14 +34,6 @@ namespace com.limphus.extraction_shooter
             InvokeRepeating(nameof(SetDestination), 0f, 0.2f);
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                Destroy(gameObject);
-            }
-        }
-
         private void StartAttack()
         {
             isAttacking = true;

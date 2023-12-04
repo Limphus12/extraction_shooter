@@ -19,24 +19,26 @@ namespace com.limphus.extraction_shooter
         }
 
         [SerializeField] private Wave[] waves;
-        private int currentWave;
+        protected int currentWave;
 
         [SerializeField] private float timeBetweenWaves = 30f;
 
-        private float waveCountDown;
+        //[SerializeField] private bool loopWaves = false;
 
-        SpawnState state = SpawnState.COUNTING;
+        protected float waveCountDown;
+
+        protected SpawnState state = SpawnState.COUNTING;
 
         //gotta keep track of the current enemies
-        private List<AIBase> enemies = new List<AIBase>();
+        protected List<AIBase> enemies = new List<AIBase>();
 
         //a private list of spawn points; populate this in the awake/start method
-        private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
+        protected List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
 
         //private List<SpawnPoint> bossSpawnPoints = new List<SpawnPoint>();
         //private List<SpawnPoint> turretSpawnPoints = new List<SpawnPoint>();
 
-        private void Awake()
+        protected virtual void Awake()
         {
             //find all of the spawnpoints; we can do this via tags and a for loop
             GameObject[] spawnPointOBJs = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -58,7 +60,7 @@ namespace com.limphus.extraction_shooter
             CheckWave();
         }
 
-        private void CheckWave()
+        protected virtual void CheckWave()
         {
             switch (state)
             {
@@ -103,7 +105,7 @@ namespace com.limphus.extraction_shooter
             state = newState;
         }
 
-        private bool EnemyIsAlive()
+        protected bool EnemyIsAlive()
         {
             for (int i = 0; i < enemies.Count; i++)
             {
@@ -114,13 +116,19 @@ namespace com.limphus.extraction_shooter
             return enemies.Count > 0;
         }
 
-        private IEnumerator SpawnWave(Wave wave)
+        protected IEnumerator SpawnWave(Wave wave)
         {
             ChangeSpawnState(SpawnState.SPAWNING);
+
+            yield return new WaitForSeconds(1f); //gonna put in a lil buffer here
 
             //loop to spawn all of the enemies over time
             for (int i = 0; i < wave.enemyCount; i++)
             {
+                //TODO
+                //get the current number of enemies; if we have not reached the maximum, then continue spawning
+                //else we're just gonna hold off for now, until an enemy dies
+
                 SpawnEnemy();
 
                 yield return new WaitForSeconds(wave.spawnRate);
@@ -151,7 +159,7 @@ namespace com.limphus.extraction_shooter
             //OR, WE COULD JUST CHECK IF THE ENEMY GAME OBJECT IS NOT NULL, AND CLEAN UP THE LIST EVERY FRAME IG?
         }
 
-        private void EndWave()
+        protected void EndWave()
         {
             Debug.Log("Wave " + (currentWave + 1) + " Completed");
 
@@ -162,7 +170,7 @@ namespace com.limphus.extraction_shooter
             NextWave();
         }
 
-        private void NextWave()
+        protected virtual void NextWave()
         {
             if (currentWave >= waves.Length - 1)
             {
