@@ -5,13 +5,18 @@ using UnityEngine.Events;
 
 namespace com.limphus.utilities
 {
-    public class TriggerEnter : MonoBehaviour
+    public class Trigger : MonoBehaviour
     {
-        [SerializeField] protected UnityEvent onTriggerEnterEvent;
+        [SerializeField] protected UnityEvent onTriggerEnterEvent, onTriggerExitEvent;
 
         protected virtual void OnTriggerEnter(Collider other)
         {
             onTriggerEnterEvent?.Invoke();
+        }
+
+        protected virtual void OnTriggerExit(Collider other)
+        {
+            onTriggerExitEvent?.Invoke();
         }
     }
 }

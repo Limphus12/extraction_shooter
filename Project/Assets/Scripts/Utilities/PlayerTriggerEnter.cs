@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace com.limphus.utilities
 {
-    public class PlayerTriggerEnter : TriggerEnter
+    public class PlayerTriggerEnter : Trigger
     {
         [SerializeField] private string playerTag = "Player";
 
