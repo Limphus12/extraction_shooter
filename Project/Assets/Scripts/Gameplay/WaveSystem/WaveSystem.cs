@@ -16,10 +16,12 @@ namespace com.limphus.extraction_shooter
 
             [Tooltip("The rate (in seconds) that enemies are spawned")]
             public float spawnRate;
+
+            //in the future, we're gonna want to add things for enemy health and damage!
         }
 
         [SerializeField] private Wave[] waves;
-        protected int currentWave;
+        protected static int currentWave;
 
         [SerializeField] private float timeBetweenWaves = 30f;
 

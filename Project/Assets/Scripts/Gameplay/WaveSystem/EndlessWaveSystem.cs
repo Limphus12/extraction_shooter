@@ -19,6 +19,7 @@ namespace com.limphus.extraction_shooter
         [SerializeField] private Vector2 enemyCountMinMax;
         [SerializeField] private Vector2 spawnRateMinMax;
 
+        public static int GetCurrentWave() => currentWave;
 
         protected override void Awake()
         {
@@ -50,7 +51,7 @@ namespace com.limphus.extraction_shooter
                 case SpawnState.COUNTING:
 
                     //if we're not in the spawning state (so ig we'd be in the counting state), then do the countdown till the next wave!
-                    waveCountDown -= Time.deltaTime; Debug.Log(Mathf.RoundToInt(waveCountDown));
+                    waveCountDown -= Time.deltaTime; //Debug.Log(Mathf.RoundToInt(waveCountDown));
 
                     //TODO: add event for wave countdown
 

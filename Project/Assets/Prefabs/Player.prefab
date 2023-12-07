@@ -9600,6 +9600,7 @@ GameObject:
   - component: {fileID: 5358056577268887822}
   - component: {fileID: 5358056577268887823}
   - component: {fileID: 7853232161464160384}
+  - component: {fileID: 3699601846330564012}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -9691,6 +9692,21 @@ MonoBehaviour:
   pickupPoint: {fileID: 5848906967783297881}
   moveForce: 5
   raycastLength: 10
+--- !u!114 &3699601846330564012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5358056577268887821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5eddb985fb20145940eac24673309f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRange: 2
+  interactionKey: 101
+  raycastPoint: {fileID: 1154132035860330907}
 --- !u!1 &5358056577461103855
 GameObject:
   m_ObjectHideFlags: 0
