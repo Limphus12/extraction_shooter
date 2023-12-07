@@ -11,6 +11,18 @@ namespace com.limphus.extraction_shooter
 
         public static int Supplies;
 
+        public static void AddSupplies()
+        {
+            //calculate the current supply rate
+            //base this on the current wave ig??
+            //maybe some other stuff too
+
+            //for now, we'll just add a solid amount
+            Supplies += 100;
+
+            Debug.Log("Current Supplies: " + Supplies);
+        }
+
         public static bool CanRemoveSupplies(int supplyAmount) { return Supplies - supplyAmount >= 0; }
         public static void AddSupplies(int supplyAmount) => Supplies += supplyAmount;
         public static void RemoveSupplies(int supplyAmount) => Supplies -= supplyAmount;

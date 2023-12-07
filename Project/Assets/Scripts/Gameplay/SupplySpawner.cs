@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace com.limphus.extraction_shooter
 {
-    public class SupplyPoint : MonoBehaviour
+    public class SupplySpawner : MonoBehaviour
     {
         [SerializeField] private float supplySpawnTime;
 
         //potentially add different supply prefabs in the future? with like, different supply amounts??
         [SerializeField] private GameObject supplyPrefab;
 
-        [SerializeField] private GameObject currentSupply; //basically, we don't wanna spawn a supply if we already have one!
+        private GameObject currentSupply; //basically, we don't wanna spawn a supply if we already have one!
 
         private bool canSpawn = true;
 
@@ -23,10 +23,7 @@ namespace com.limphus.extraction_shooter
 
         private void CheckSpawn()
         {
-            if (canSpawn && currentSupply == null)
-            {
-                SpawnSupply();
-            }
+            if (canSpawn && !currentSupply) SpawnSupply();
         }
 
         private void SpawnSupply()
@@ -34,8 +31,6 @@ namespace com.limphus.extraction_shooter
             canSpawn = false;
 
             currentSupply = Instantiate(supplyPrefab, transform.position, transform.rotation);
-
-            Invoke(nameof(ResetSpawn), supplySpawnTime);
         }
 
         private void ResetSpawn()
@@ -43,11 +38,11 @@ namespace com.limphus.extraction_shooter
             canSpawn = true;
         }
 
-        //call this to remove the current supply
         public void RemoveCurrentSupply()
         {
             currentSupply = null;
-        }
 
+            Invoke(nameof(ResetSpawn), supplySpawnTime);
+        }
     }
 }
