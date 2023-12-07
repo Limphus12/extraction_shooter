@@ -18,6 +18,8 @@ namespace com.limphus.extraction_shooter
             public float spawnRate;
 
             //in the future, we're gonna want to add things for enemy health and damage!
+
+            //ah, and speed too! because we wanna be able to go from walking to running over time!!
         }
 
         [SerializeField] private Wave[] waves;
@@ -29,7 +31,7 @@ namespace com.limphus.extraction_shooter
 
         protected float waveCountDown;
 
-        protected SpawnState state = SpawnState.COUNTING;
+        protected SpawnState state;
 
         //gotta keep track of the current enemies
         protected List<AIBase> enemies = new List<AIBase>();
@@ -55,6 +57,8 @@ namespace com.limphus.extraction_shooter
             //by the end of this, we should have a nice list of spawn points to use!
 
             waveCountDown = 5f; //also init the wave countdown
+
+            state = SpawnState.COUNTING; //and the spawn state
         }
 
         private void Update()

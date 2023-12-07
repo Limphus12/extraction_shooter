@@ -104,7 +104,7 @@ namespace com.limphus.extraction_shooter
             IsDead = true;
 
             //currently we're only debug logging lmao.
-            Debug.Log("Entity (" + gameObject.name + ") is Dead");
+            //Debug.Log("Entity (" + gameObject.name + ") is Dead");
         }
     }
 }

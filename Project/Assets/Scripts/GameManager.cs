@@ -14,7 +14,7 @@ namespace com.limphus.extraction_shooter
 
         public static void AddSupplies()
         {
-            //calculate the total supplies we're gonna get
+            //calculate the total supplies we're gonna get (this works as intended for now; wave 2 with 700 mats gives us 1400 in total)
             TempSupplies *= EndlessWaveSystem.GetCurrentWave() + 1;
 
             //and add them to our supplies!

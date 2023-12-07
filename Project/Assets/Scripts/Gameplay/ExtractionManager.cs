@@ -34,6 +34,8 @@ namespace com.limphus.extraction_shooter
             {
                 timer -= Time.deltaTime;
 
+                //need to add events to send off the timer number
+
                 //Debug.Log(Mathf.RoundToInt(timer));
 
                 yield return null;
