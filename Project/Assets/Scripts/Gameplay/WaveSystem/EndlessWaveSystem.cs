@@ -88,6 +88,8 @@ namespace com.limphus.extraction_shooter
             currentSpawnRate /= rateDivisionAmount; currentSpawnRate = Mathf.Clamp(currentSpawnRate, spawnRateMinMax.x, spawnRateMinMax.y);
 
             currentWave++;
+
+            //need to send off a 
         }
     }
 }

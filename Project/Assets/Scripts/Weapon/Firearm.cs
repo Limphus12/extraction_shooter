@@ -78,12 +78,9 @@ namespace com.limphus.extraction_shooter
             //TODO: add a layermask so that we can stop hitting the supply triggers!
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit hit, Mathf.Infinity))
             {
-                //Debug.Log(hit.transform.gameObject.name);
-
                 IDamageable damageable = hit.transform.GetComponent<IDamageable>();
 
                 if (damageable != null) damageable.Damage(damage);
-
             }
 
             Invoke(nameof(EndAttack), 1f / rof);
