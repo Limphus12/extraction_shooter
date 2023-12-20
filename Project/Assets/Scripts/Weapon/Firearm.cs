@@ -8,8 +8,13 @@ namespace com.limphus.extraction_shooter
 {
     public class Firearm : MonoBehaviour
     {
+        [Header("Shooting")]
         [SerializeField] private int damage;
-        [SerializeField] private float reloadTime, rof;
+        [SerializeField] private float rof;
+
+        [Header("Reloading")]
+        [SerializeField] private float reloadTime;
+        [SerializeField] private int maxAmmo;
 
         //private WeaponRecoil weaponRecoil;
         //private WeaponRecoil cameraRecoil;
@@ -22,15 +27,20 @@ namespace com.limphus.extraction_shooter
 
         //private FirearmFunctionAnimation firearmFunctionAnimation;
 
-        private bool isAttacking;
+        public bool IsAttacking { get; private set; }
+        public bool IsAiming { get; private set; }
+        public bool IsReloading { get; private set; }
+        public bool IsEquipped { get; private set; }
 
-        [SerializeField] private Transform playerCameraTransform;
+        private int currentAmmo;
+
+        private Transform playerCameraTransform;
 
         //event examples
         //public event EventHandler<Events.OnIntChangedEventArgs> OnHealthChanged;
         //public event EventHandler<EventArgs> OnHealthDepleted, OnHealthReplenished;
 
-        public event EventHandler<EventArgs> OnStartAttack, OnAttack, OnEndAttack;
+        public event EventHandler<EventArgs> OnStartAttack, OnAttack, OnEndAttack, OnStartReload, OnReload, OnEndReload;
         public event EventHandler<Events.OnRaycastHitEventArgs> OnEnvHit, OnEnemyHit;
 
         private void Awake()
@@ -41,30 +51,18 @@ namespace com.limphus.extraction_shooter
         private void Init()
         {
             if (!playerCameraTransform) playerCameraTransform = GameManager.PlayerCamera.transform;
+
+            currentAmmo = maxAmmo;
         }
 
-        private void Start()
+        public bool InUse()
         {
-
+            return IsAttacking && IsReloading;
         }
 
-        private void Update()
+        public void StartAttack()
         {
-            Inputs();
-        }
-
-        private void Inputs()
-        {
-            //if we press the rmb, and we're not already firing
-            if (Input.GetMouseButtonDown(0) && !isAttacking)
-            {
-                StartAttack();
-            }
-        }
-
-        private void StartAttack()
-        {
-            isAttacking = true;
+            IsAttacking = true;
 
             OnStartAttack?.Invoke(this, new EventArgs { });
 
@@ -80,7 +78,14 @@ namespace com.limphus.extraction_shooter
             {
                 IDamageable damageable = hit.transform.GetComponent<IDamageable>();
 
-                if (damageable != null) damageable.Damage(damage);
+                if (damageable != null)
+                {
+                    OnEnemyHit?.Invoke(this, new Events.OnRaycastHitEventArgs { i = hit });
+
+                    damageable.Damage(damage);
+                }
+
+                else if (damageable == null) OnEnvHit?.Invoke(this, new Events.OnRaycastHitEventArgs { i = hit });
             }
 
             Invoke(nameof(EndAttack), 1f / rof);
@@ -90,7 +95,62 @@ namespace com.limphus.extraction_shooter
         {
             OnEndAttack?.Invoke(this, new EventArgs { });
 
-            isAttacking = false;
+            IsAttacking = false;
+        }
+
+        public void StartReload()
+        {
+            IsReloading = true;
+
+            OnStartReload?.Invoke(this, new EventArgs { });
+
+            Invoke(nameof(Reload), reloadTime);
+        }
+
+        private void Reload()
+        {
+            //in the future we may want to add a proper ammo system,
+            //but for now we'll just reset the current ammo to the max ammo
+            currentAmmo = maxAmmo;
+
+            EndReload();
+        }
+
+        private void EndReload()
+        {
+            OnEndReload?.Invoke(this, new EventArgs { });
+
+            IsReloading = false;
+        }
+
+        public void Aim(bool b)
+        {
+            if (IsReloading) b = false;
+
+            else IsAiming = b;
+
+            ////if we have the camera and weapon recoil references, as well as the weapon sway reference, call the aim method on them too
+            //if (cameraRecoil && weaponRecoil && firearmSway)
+            //{
+            //    cameraRecoil.Aim(b);
+            //    weaponRecoil.Aim(b);
+            //    firearmSway.Aim(b);
+            //}
+        }
+
+        public void Interrupt()
+        {
+            if (!InUse()) return;
+
+            else CancelFunctions();
+        }
+
+        private void CancelFunctions()
+        {
+            if (IsReloading) CancelInvoke(nameof(Reload));
+            if (IsAttacking) CancelInvoke(nameof(EndAttack));
+
+            IsReloading = false; IsAttacking = false;
         }
     }
 }

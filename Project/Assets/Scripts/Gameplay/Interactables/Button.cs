@@ -11,8 +11,6 @@ namespace com.limphus.extraction_shooter
 
         public void Interact()
         {
-            Debug.Log("Interacting!");
-
             buttonEvent?.Invoke();
         }
     }

@@ -14,7 +14,7 @@ namespace com.limphus.extraction_shooter
         private Transform playerCamera;
         private Rigidbody heldObject;
 
-        bool mouseInput;
+        bool pickup;
 
         private void Awake()
         {
@@ -23,7 +23,7 @@ namespace com.limphus.extraction_shooter
 
         private void LateUpdate()
         {
-            Inputs(); Pickup();
+            Inputs(); CheckPickup();
         }
 
         private void FixedUpdate()
@@ -33,12 +33,20 @@ namespace com.limphus.extraction_shooter
 
         private void Inputs()
         {
-            mouseInput = Input.GetMouseButton(0);
+            if (!heldObject && pickup) ResetPickup(); //if we don't have a held object (because it got deleted, for instance), then call the resetpickup function
+
+            if (Input.GetMouseButtonDown(2)) pickup = !pickup;
+            
+            if (Input.GetMouseButtonUp(2) && !heldObject) ResetPickup();
         }
 
-        void Pickup()
+        void CheckPickup()
         {
-            if (mouseInput && !heldObject)
+            //if we're already picking up the object, then return
+            if (pickup && heldObject) return;
+
+            //if we're trying to pick up and we have no held object
+            if (pickup && !heldObject)
             {
                 //try to pick up the object, using a raycast
                 if (Physics.Raycast(playerCamera.position, playerCamera.forward, out RaycastHit hit, 10f))
@@ -71,15 +79,26 @@ namespace com.limphus.extraction_shooter
                 }
             }
 
-            if (!mouseInput && heldObject)
+            //if we're turning off the pickup and we have a held object
+            else if (!pickup && heldObject)
             {
-                //place down the object!
-                heldObject.useGravity = true;
-                heldObject.drag = 1;
-                heldObject.constraints = RigidbodyConstraints.None;
-
-                heldObject = null;
+                DropPickup();
             }
+        }
+
+        void ResetPickup()
+        {
+            pickup = false;
+        }
+
+        void DropPickup()
+        {
+            //place down the object!
+            heldObject.useGravity = true;
+            heldObject.drag = 1;
+            heldObject.constraints = RigidbodyConstraints.None;
+
+            heldObject = null;
         }
 
         void MovePickup()

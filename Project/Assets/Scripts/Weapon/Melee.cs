@@ -24,45 +24,29 @@ namespace com.limphus.extraction_shooter
             if (!playerCameraTransform) playerCameraTransform = GameManager.PlayerCamera.transform;
         }
 
-        private void Start()
+        public bool InUse()
         {
-
+            return IsAttacking;
         }
 
-        private void Update()
-        {
-            Inputs();
-        }
+        public bool IsAttacking { get; private set; }
 
-        private void Inputs()
-        {
-            //if we press the rmb, and we're not already firing
-            if (Input.GetKeyDown(KeyCode.V) && !isAttacking)
-            {
-                StartAttack();
-            }
-        }
+        private bool canAttack = true;
 
-        private bool isAttacking = false, canAttack = true;
-
-        private void StartAttack()
+        public void StartAttack()
         {
-            isAttacking = true;
+            IsAttacking = true;
 
             Invoke(nameof(Attack), attackDelay);
         }
 
         private void Attack()
         {
-            //for stabbing, we're gonna do this boxcast
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit hit, attackRange))
             {
-                //check if we hit an enemy or not
-                    //if we did, fire off an event saying so
-                    //oh, and do damage stuff ig
+                IDamageable damageable = hit.transform.GetComponent<IDamageable>();
 
-                //otherwise if we didn't
-                    //just fire an event saying that we didn't!
+                if (damageable != null) damageable.Damage(damage);
             }
 
             Invoke(nameof(EndAttack), endAttackDelay);
@@ -70,7 +54,7 @@ namespace com.limphus.extraction_shooter
 
         private void EndAttack()
         {
-            isAttacking = false;
+            IsAttacking = false;
             canAttack = false;
 
             Invoke(nameof(ResetAttack), attackCooldown);

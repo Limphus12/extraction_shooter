@@ -19,6 +19,8 @@ namespace com.limphus.extraction_shooter
         {
             if (isExtracting) return;
 
+            Debug.Log("Extraction Start!");
+
             isExtracting = true;
 
             timer = timeToExtract;
@@ -27,14 +29,25 @@ namespace com.limphus.extraction_shooter
             StartCoroutine(ExtractionTimer());
         }
 
+        int prevTime;
+
         IEnumerator ExtractionTimer()
         {
+            prevTime = Mathf.RoundToInt(timeToExtract);
+
             //loop whilst our timer is not below 0
             while (timer > 0)
             {
                 timer -= Time.deltaTime;
 
                 //need to add events to send off the timer number
+
+                if (Mathf.RoundToInt(timer) != prevTime)
+                {
+                    Debug.Log(Mathf.RoundToInt(timer));
+
+                    prevTime = Mathf.RoundToInt(timer);
+                }
 
                 //Debug.Log(Mathf.RoundToInt(timer));
 

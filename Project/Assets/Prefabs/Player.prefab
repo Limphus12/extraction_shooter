@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &406009862282809296
@@ -86,9 +86,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 15
-  reloadTime: 3
   rof: 8
-  playerCameraTransform: {fileID: 0}
+  reloadTime: 3
+  maxAmmo: 10
 --- !u!114 &8685706607547740027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +121,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &416815066141726296
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8768,6 +8768,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3543507256268463222}
+  - component: {fileID: 7722780334329602136}
   m_Layer: 3
   m_Name: Melee
   m_TagString: Untagged
@@ -8789,6 +8790,23 @@ Transform:
   m_Father: {fileID: 6822713637482451986}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7722780334329602136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2979700208759338581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27c6a3e1ab05b3f4781c8a50098e4a3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 100
+  attackRange: 2
+  attackDelay: 0.5
+  endAttackDelay: 0.5
+  attackCooldown: 1
 --- !u!1 &3273426608530828447
 GameObject:
   m_ObjectHideFlags: 0
@@ -10061,7 +10079,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -50}
-  m_SizeDelta: {x: 400, y: 50}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6982425079288798871
 CanvasRenderer:
@@ -10091,7 +10109,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: E
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10100,8 +10118,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10118,8 +10136,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10169,6 +10187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6822713637482451986}
+  - component: {fileID: 7464783875133470685}
   m_Layer: 3
   m_Name: WeaponManager
   m_TagString: Untagged
@@ -10192,6 +10211,22 @@ Transform:
   m_Father: {fileID: 2369520637006341443}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7464783875133470685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6822713637482451981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1486813d211149a4a93196b1f76de1fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireKey: 0
+  aimKey: 1
+  reloadKey: 114
+  meleeKey: 118
 --- !u!1 &6822713638110934634
 GameObject:
   m_ObjectHideFlags: 0
@@ -10204,6 +10239,7 @@ GameObject:
   - component: {fileID: 6822713638110934638}
   - component: {fileID: 6822713638110934633}
   - component: {fileID: 6822713638110934632}
+  - component: {fileID: 8257844928169821611}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -10250,7 +10286,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 7
+  m_AdditionalShaderChannelsFlag: 31
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -10294,6 +10330,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8257844928169821611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6822713638110934634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2deff6809d3324d4ea067ff5fd6be552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionText: {fileID: 1713997130141206227}
 --- !u!1 &6822713638158227434
 GameObject:
   m_ObjectHideFlags: 0
