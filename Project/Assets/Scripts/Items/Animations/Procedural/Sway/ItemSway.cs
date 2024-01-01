@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace com.limphus.procedural_animation
 {
+    [System.Serializable]
     public struct ItemSwayStruct
     {
         public Vector3 position; public Quaternion rotation;
@@ -27,7 +28,7 @@ namespace com.limphus.procedural_animation
 
         protected virtual void Awake()
         {
-            initialRotation = idleData.rotation;
+            initialRotation = transform.localRotation;
         }
 
         protected virtual void Update() 
@@ -56,10 +57,14 @@ namespace com.limphus.procedural_animation
             transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition + data.position, data.swaySmooth * Time.deltaTime);
 
             //calculate tilt rotations
-            Vector3 tiltRotations = new Vector3(Mathf.Clamp(inputs.x * data.tiltAmount, -data.tiltMaximum, data.tiltMaximum), Mathf.Clamp(inputs.y * data.tiltAmount, -data.tiltMaximum, data.tiltMaximum), Mathf.Clamp(Input.GetAxis("Horizontal") * data.tiltAmount, -data.tiltMaximum, data.tiltMaximum));
+            float tiltRotationY = Mathf.Clamp(inputs.x * data.tiltAmount, -data.tiltMaximum, data.tiltMaximum);
+            float tiltRotationX = Mathf.Clamp(inputs.y * data.tiltAmount, -data.tiltMaximum, data.tiltMaximum);
+            float tiltRotationZ = Mathf.Clamp(Input.GetAxis("Horizontal") * data.tiltAmount, -data.tiltMaximum, data.tiltMaximum);
 
             //calculate target rotation
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(tiltRotations.x, -tiltRotations.y, -tiltRotations.z)) * data.rotation;
+            Quaternion tiltRotation = Quaternion.Euler(new Vector3(tiltRotationX, -tiltRotationY, -tiltRotationZ));
+
+            Quaternion targetRotation = data.rotation * tiltRotation;
 
             //apply target rotation
             transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation * initialRotation, data.tiltSmooth * Time.deltaTime);

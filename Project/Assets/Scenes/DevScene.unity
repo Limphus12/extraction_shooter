@@ -1109,6 +1109,58 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3573890567437415282, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3573890567437415282, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3573890567437415282, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.rotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.rotation.x
+      value: 0.00008727408
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.rotation.y
+      value: 0.00008725884
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.rotation.z
+      value: 0.00008725884
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.swayAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.swaySmooth
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.tiltAmount
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.tiltSmooth
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.swayMaximum
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254631010819933558, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
+      propertyPath: idleData.tiltMaximum
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5358056577268887820, guid: 60710e0f83802ad498077ab74a71746f, type: 3}
       propertyPath: m_RootOrder
       value: 7
