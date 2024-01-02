@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace com.limphus.retro_survival_shooter
+namespace com.limphus.procedural_animation
 {
     public class WeaponRecoil : MonoBehaviour
     {

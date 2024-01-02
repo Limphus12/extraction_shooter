@@ -11,6 +11,16 @@ namespace com.limphus.utilities
 
         protected string currentState;
 
+        protected void Awake()
+        {
+            Init();
+        }
+
+        protected virtual void Init()
+        {
+
+        }
+
         protected void PlayAnimation(string newState)
         {
             //stops the same animation from interrupting itself.
@@ -25,16 +35,22 @@ namespace com.limphus.utilities
 
         protected void SetParamater(string paramater, int value)
         {
+            if (animator.GetInteger(paramater) == value) return;
+
             animator.SetInteger(paramater, value);
         }
 
         protected void SetParamater(string paramater, float value)
         {
+            if (animator.GetFloat(paramater) == value) return;
+
             animator.SetFloat(paramater, value);
         }
 
         protected void SetParamater(string paramater, bool value)
         {
+            if (animator.GetBool(paramater) == value) return;
+
             animator.SetBool(paramater, value);
         }
 

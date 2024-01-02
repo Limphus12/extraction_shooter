@@ -31,7 +31,7 @@ namespace com.limphus.extraction_shooter
         [SerializeField] private float cameraLeanAmount = 4.0f;
 
         [Space]
-        [SerializeField] private Transform playerCameraHolder;
+        [SerializeField] private Transform playerCamera;
 
         [Header("Stance Settings")]
         [SerializeField] private float standingHeight = 2.0f;
@@ -56,7 +56,10 @@ namespace com.limphus.extraction_shooter
         public CharacterController CharacterController { get; private set; }
         private Vector3 moveDirection = Vector3.zero;
         private float rotationX = 0, originalStepOffset, currentSpeed, currentCeilingRaycast, currentGroundRaycast;
-        private bool isCrouching, isRunning, isJumping, isCoyoteTime;
+        private bool isJumping, isCoyoteTime;
+
+        public bool IsCrouching { get; private set; }
+        public bool IsRunning { get; private set; }
 
         public float CurrentHeight { get; private set; }
 
@@ -229,14 +232,14 @@ namespace com.limphus.extraction_shooter
 
                 if (!cameraLean)
                 {
-                    playerCameraHolder.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+                    playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
                 }
 
                 //camera lean, sets the camera's Z rotation based off horizontal input
                 else if (cameraLean && canCameraLean)
                 {
                     float currentX = Input.GetAxis("LeanHorizontal");
-                    playerCameraHolder.transform.localRotation = Quaternion.Euler(rotationX, 0, currentX * -cameraLeanAmount);
+                    playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, currentX * -cameraLeanAmount);
                 }
 
                 transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
@@ -249,16 +252,16 @@ namespace com.limphus.extraction_shooter
 
         public PlayerMovementState GetMovementState()
         {
-            if (isCrouching) return PlayerMovementState.CROUCHING;
+            if (IsCrouching) return PlayerMovementState.CROUCHING;
 
-            else if (isRunning && IsMoving) return PlayerMovementState.RUNNING;
+            else if (IsRunning && IsMoving) return PlayerMovementState.RUNNING;
 
             else return PlayerMovementState.WALKING;
         }
 
         void Crouch()
         {
-            isCrouching = true;
+            IsCrouching = true;
 
             ChangeStance(crouchingHeight, crouchingCenter, crouchingCameraPosition);
             ChangeSpeed(crouchSpeed);
@@ -266,7 +269,7 @@ namespace com.limphus.extraction_shooter
 
         void Stand()
         {
-            isCrouching = false;
+            IsCrouching = false;
 
             ChangeStance(standingHeight, standingCenter, standingCameraPosition);
             ChangeSpeed(walkSpeed);
@@ -274,19 +277,19 @@ namespace com.limphus.extraction_shooter
 
         void Run()
         {
-            isRunning = true;
+            IsRunning = true;
 
             //if we're not crouching, use our run speed
-            if (!isCrouching)
+            if (!IsCrouching)
             {
                 ChangeSpeed(runSpeed);
             }
 
             //if we're crouching, use our crouch run speed (like project zomboid lmao).
             //EDIT: No, we just gonna un-crouch and run
-            else if (isCrouching)
+            else if (IsCrouching)
             {
-                isCrouching = false;
+                IsCrouching = false;
 
                 ChangeStance(standingHeight, standingCenter, standingCameraPosition);
                 ChangeSpeed(runSpeed);
@@ -295,16 +298,16 @@ namespace com.limphus.extraction_shooter
 
         void Walk()
         {
-            isRunning = false;
+            IsRunning = false;
 
             //if we're not crouching, use our walk speed
-            if (!isCrouching)
+            if (!IsCrouching)
             {
                 ChangeSpeed(walkSpeed);
             }
 
             //if we're crouching, use our crouch speed
-            else if (isCrouching)
+            else if (IsCrouching)
             {
                 ChangeSpeed(crouchSpeed);
             }
@@ -326,17 +329,17 @@ namespace com.limphus.extraction_shooter
             CharacterController.height = height;
             CharacterController.center = center;
 
-            playerCameraHolder.localPosition = Vector3.Lerp(playerCameraHolder.localPosition, cameraPos, (stanceI + Time.deltaTime) * cameraSmoothRate);
+            playerCamera.localPosition = Vector3.Lerp(playerCamera.localPosition, cameraPos, (stanceI + Time.deltaTime) * cameraSmoothRate);
 
             //calculate current raycasts used in determining if we can either stand or for when we hit the ceiling whilst jumping
             //as well as the ground check stuff for the antibump
-            if (!isCrouching)
+            if (!IsCrouching)
             {
                 currentCeilingRaycast = standingHeight / 2 + 0.1f;
                 currentGroundRaycast = standingHeight / 2 + 0.25f;
             }
 
-            else if (isCrouching)
+            else if (IsCrouching)
             {
                 currentCeilingRaycast = crouchingHeight / 2 + 0.1f;
                 currentGroundRaycast = crouchingHeight / 2 + 0.25f;

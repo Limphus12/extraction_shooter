@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using com.limphus.utilities;
+using com.limphus.procedural_animation;
 
 namespace com.limphus.extraction_shooter
 {
@@ -16,13 +17,12 @@ namespace com.limphus.extraction_shooter
         [SerializeField] private float reloadTime;
         [SerializeField] private int maxAmmo;
 
-        //private WeaponRecoil weaponRecoil;
-        //private WeaponRecoil cameraRecoil;
+        private WeaponRecoil weaponRecoil;
 
         //private FirearmSound firearmSound;
 
-        //private FirearmSway firearmSway;
-        //private FirearmAnimation firearmAnimation;
+        private FirearmSway firearmSway;
+        private FirearmAnimation firearmAnimation;
         //private FirearmFX firearmFX;
 
         //private FirearmFunctionAnimation firearmFunctionAnimation;
@@ -42,6 +42,7 @@ namespace com.limphus.extraction_shooter
 
         public event EventHandler<EventArgs> OnStartAttack, OnAttack, OnEndAttack, OnStartReload, OnReload, OnEndReload;
         public event EventHandler<Events.OnRaycastHitEventArgs> OnEnvHit, OnEnemyHit;
+        public event EventHandler<Events.OnBoolChangedEventArgs> OnAim;
 
         private void Awake()
         {
@@ -51,6 +52,10 @@ namespace com.limphus.extraction_shooter
         private void Init()
         {
             if (!playerCameraTransform) playerCameraTransform = GameManager.PlayerCamera.transform;
+
+            if (!weaponRecoil) weaponRecoil = playerCameraTransform.GetComponentInParent<WeaponRecoil>();
+
+            if (!firearmSway) firearmSway = GetComponent<FirearmSway>();
 
             currentAmmo = maxAmmo;
         }
@@ -72,6 +77,8 @@ namespace com.limphus.extraction_shooter
         private void Attack()
         {
             OnAttack?.Invoke(this, new EventArgs { });
+
+            if (weaponRecoil) weaponRecoil.Recoil();
 
             //TODO: add a layermask so that we can stop hitting the supply triggers!
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit hit, Mathf.Infinity))
@@ -129,13 +136,10 @@ namespace com.limphus.extraction_shooter
 
             else IsAiming = b;
 
-            ////if we have the camera and weapon recoil references, as well as the weapon sway reference, call the aim method on them too
-            //if (cameraRecoil && weaponRecoil && firearmSway)
-            //{
-            //    cameraRecoil.Aim(b);
-            //    weaponRecoil.Aim(b);
-            //    firearmSway.Aim(b);
-            //}
+            weaponRecoil.Aim(b);
+            firearmSway.Aim(b);
+
+            OnAim?.Invoke(this, new Events.OnBoolChangedEventArgs { i = b });
         }
 
         public void Interrupt()
