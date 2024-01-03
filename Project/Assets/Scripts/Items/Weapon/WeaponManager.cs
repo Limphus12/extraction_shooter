@@ -44,7 +44,8 @@ namespace com.limphus.extraction_shooter
             //else firearm stuff
             if (!firearm.IsReloading) //if we're not reloading
             {
-                if (Input.GetKeyDown(reloadKey)) //if we press the reload key, then reload!
+                //if we can reload and we press the reload key
+                if (firearm.CanReload() && Input.GetKeyDown(reloadKey)) 
                 {
                     firearm.Interrupt(); firearm.StartReload();
                 }
@@ -54,7 +55,11 @@ namespace com.limphus.extraction_shooter
                     firearm.Aim(Input.GetMouseButton(aimKey)); //always check aiming
 
                     //attack if we're not attacking!
-                    if (Input.GetMouseButtonDown(fireKey) && !firearm.IsAttacking) firearm.StartAttack(); 
+                    if (Input.GetMouseButtonDown(fireKey) && !firearm.IsAttacking)
+                    {
+                        firearm.StartAttack();
+
+                    }
                 }
             }
         }

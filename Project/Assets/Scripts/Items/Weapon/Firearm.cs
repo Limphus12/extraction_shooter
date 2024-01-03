@@ -15,6 +15,7 @@ namespace com.limphus.extraction_shooter
 
         [Header("Reloading")]
         [SerializeField] private float reloadTime;
+        [SerializeField] private float partialReloadTime, fullReloadTime;
         [SerializeField] private int maxAmmo;
 
         private WeaponRecoil weaponRecoil;
@@ -34,6 +35,11 @@ namespace com.limphus.extraction_shooter
 
         private int currentAmmo;
 
+        public bool CanReload()
+        {
+            return currentAmmo < maxAmmo;
+        }
+
         private Transform playerCameraTransform;
 
         //event examples
@@ -43,6 +49,7 @@ namespace com.limphus.extraction_shooter
         public event EventHandler<EventArgs> OnStartAttack, OnAttack, OnEndAttack, OnStartReload, OnReload, OnEndReload;
         public event EventHandler<Events.OnRaycastHitEventArgs> OnEnvHit, OnEnemyHit;
         public event EventHandler<Events.OnBoolChangedEventArgs> OnAim;
+        public event EventHandler<Events.OnIntChangedEventArgs> OnAmmoChanged;
 
         private void Awake()
         {
@@ -79,6 +86,10 @@ namespace com.limphus.extraction_shooter
             OnAttack?.Invoke(this, new EventArgs { });
 
             if (weaponRecoil) weaponRecoil.Recoil();
+
+            currentAmmo--;
+
+            OnAmmoChanged?.Invoke(this, new Events.OnIntChangedEventArgs { i = currentAmmo });
 
             //TODO: add a layermask so that we can stop hitting the supply triggers!
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit hit, Mathf.Infinity))
@@ -119,6 +130,8 @@ namespace com.limphus.extraction_shooter
             //in the future we may want to add a proper ammo system,
             //but for now we'll just reset the current ammo to the max ammo
             currentAmmo = maxAmmo;
+
+            OnAmmoChanged?.Invoke(this, new Events.OnIntChangedEventArgs { i = currentAmmo });
 
             EndReload();
         }
