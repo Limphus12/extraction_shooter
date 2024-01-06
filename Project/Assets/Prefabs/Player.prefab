@@ -107,8 +107,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 2463454694433385149}
-  bulletParticles: {fileID: 6189553901500354980, guid: 992ce31570107144888ae8606fe3e726, type: 3}
-  muzzleParticles: {fileID: 2154087813206354009, guid: 422f5331152d5d14a86b00aec9aed1fa, type: 3}
+  bulletParticles: {fileID: 6189553901500354980, guid: 995fcdc7810905740bdb33e12028e3e2, type: 3}
+  muzzleParticles: {fileID: 2154087813206354009, guid: 7cf86b637747b7f428d955aed9ce2e0a, type: 3}
   enemyHitParticles: {fileID: 0}
   envHitParticles: {fileID: 0}
 --- !u!114 &4254631010819933558
@@ -5707,7 +5707,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Revolver
+  m_text: Pistol
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5734,12 +5734,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 44.75
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 16
-  m_fontSizeMax: 24
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -8126,7 +8126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2232844943822396465
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8569,7 +8569,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 6 / 12
+  m_text: '12
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8596,12 +8598,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 44.75
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 48
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -10448,6 +10450,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionText: {fileID: 1713997130141206227}
+  ammoText: {fileID: 6663488609764499416}
+  crosshairUI: {fileID: 7340511208990601179}
 --- !u!1 &6822713638158227434
 GameObject:
   m_ObjectHideFlags: 0
@@ -10739,7 +10743,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8441610385158451388}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.06, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0.06, z: 0.175}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5199357296582887115}
