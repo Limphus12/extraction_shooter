@@ -88,12 +88,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a53c5cba8b376cc4ca794eda94d16996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
+  damage: 25
   rof: 8
   reloadTime: 2
   partialReloadTime: 2
   fullReloadTime: 3
-  maxAmmo: 9
+  maxAmmo: 12
 --- !u!114 &8685706607547740027
 MonoBehaviour:
   m_ObjectHideFlags: 0

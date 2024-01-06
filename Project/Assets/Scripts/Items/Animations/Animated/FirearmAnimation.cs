@@ -13,7 +13,8 @@ namespace com.limphus.extraction_shooter
         const string IS_FIRING = "isFiring";
         const string IS_RELOADING = "isReloading";
         const string FIRE = "Fire";
-        const string RELOAD = "Reload";
+        const string PARTIAL_RELOAD = "PartialReload";
+        const string FULL_RELOAD = "FullReload";
 
         protected override void Init()
         {
@@ -28,15 +29,18 @@ namespace com.limphus.extraction_shooter
             firearm.OnEndReload += Firearm_OnEndReload;
         }
 
-        private void Firearm_OnStartReload(object sender, System.EventArgs e)
+        private void Firearm_OnStartReload(object sender, Events.OnBoolChangedEventArgs e)
         {
-            SetTrigger(RELOAD, true);
+            if (e.i) SetTrigger(PARTIAL_RELOAD, true);
+            else if (!e.i) SetTrigger(FULL_RELOAD, true);
+
             SetParamater(IS_RELOADING, true);
         }
 
         private void Firearm_OnEndReload(object sender, System.EventArgs e)
         {
-            SetTrigger(RELOAD, false);
+            SetTrigger(PARTIAL_RELOAD, false); SetTrigger(FULL_RELOAD, false);
+
             SetParamater(IS_RELOADING, false);
         }
 

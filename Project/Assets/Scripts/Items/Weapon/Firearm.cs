@@ -40,15 +40,20 @@ namespace com.limphus.extraction_shooter
             return currentAmmo < maxAmmo;
         }
 
+        public bool CanAttack()
+        {
+            return !IsAttacking && currentAmmo > 0;
+        }
+
         private Transform playerCameraTransform;
 
         //event examples
         //public event EventHandler<Events.OnIntChangedEventArgs> OnHealthChanged;
         //public event EventHandler<EventArgs> OnHealthDepleted, OnHealthReplenished;
 
-        public event EventHandler<EventArgs> OnStartAttack, OnAttack, OnEndAttack, OnStartReload, OnReload, OnEndReload;
+        public event EventHandler<EventArgs> OnStartAttack, OnAttack, OnEndAttack, OnReload, OnEndReload;
         public event EventHandler<Events.OnRaycastHitEventArgs> OnEnvHit, OnEnemyHit;
-        public event EventHandler<Events.OnBoolChangedEventArgs> OnAim;
+        public event EventHandler<Events.OnBoolChangedEventArgs> OnAim, OnStartReload;
         public event EventHandler<Events.OnIntChangedEventArgs> OnAmmoChanged;
 
         private void Awake()
@@ -120,9 +125,10 @@ namespace com.limphus.extraction_shooter
         {
             IsReloading = true;
 
-            OnStartReload?.Invoke(this, new EventArgs { });
+            OnStartReload?.Invoke(this, new Events.OnBoolChangedEventArgs { i = currentAmmo > 0 });
 
-            Invoke(nameof(Reload), reloadTime);
+            if (currentAmmo > 0) Invoke(nameof(Reload), partialReloadTime);
+            else if (currentAmmo == 0) Invoke(nameof(Reload), fullReloadTime);
         }
 
         private void Reload()

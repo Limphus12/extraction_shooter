@@ -54,13 +54,17 @@ namespace com.limphus.extraction_shooter
                 {
                     firearm.Aim(Input.GetMouseButton(aimKey)); //always check aiming
 
-                    //attack if we're not attacking!
-                    if (Input.GetMouseButtonDown(fireKey) && !firearm.IsAttacking)
+                    //attack if we press the fire key and we can attack! (i.e. we have ammo, and we're not already firing)
+                    if (Input.GetMouseButtonDown(fireKey) && firearm.CanAttack())
                     {
                         firearm.StartAttack();
-
                     }
                 }
+            }
+
+            else if (firearm.IsReloading)
+            {
+                firearm.Aim(false); //no aiming whilst reloading for now (perhaps in the future??)
             }
         }
     }
