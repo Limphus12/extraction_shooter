@@ -54,10 +54,13 @@ namespace com.limphus.extraction_shooter
                 {
                     firearm.Aim(Input.GetMouseButton(aimKey)); //always check aiming
 
-                    //attack if we press the fire key and we can attack! (i.e. we have ammo, and we're not already firing)
-                    if (Input.GetMouseButtonDown(fireKey) && firearm.CanAttack())
+                    if (Input.GetMouseButtonDown(fireKey)) //if we press the fire key
                     {
-                        firearm.StartAttack();
+                        //if we have no ammo
+                        if (!firearm.HasAmmo()) firearm.StartReload();
+
+                        //if we can attack (i.e. we have ammo, and we're not already firing)
+                        else if (firearm.CanAttack()) firearm.StartAttack();
                     }
                 }
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using com.limphus.utilities;
 
 namespace com.limphus.extraction_shooter
 {
@@ -89,7 +90,13 @@ namespace com.limphus.extraction_shooter
 
             currentWave++;
 
-            //need to send off a 
+            //need to send off an event for the next wave
+            OnWaveChanged(new Events.OnIntChangedEventArgs { i = currentWave + 1 });
+        }
+
+        protected override void OnWaveChanged(Events.OnIntChangedEventArgs e)
+        {
+            base.OnWaveChanged(e);
         }
     }
 }

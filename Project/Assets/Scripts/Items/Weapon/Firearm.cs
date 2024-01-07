@@ -35,6 +35,11 @@ namespace com.limphus.extraction_shooter
 
         private int currentAmmo;
 
+        public bool HasAmmo()
+        {
+            return currentAmmo > 0;
+        }
+
         public bool CanReload()
         {
             return currentAmmo < maxAmmo;
@@ -42,7 +47,7 @@ namespace com.limphus.extraction_shooter
 
         public bool CanAttack()
         {
-            return !IsAttacking && currentAmmo > 0;
+            return !IsAttacking && HasAmmo();
         }
 
         private Transform playerCameraTransform;
@@ -81,14 +86,14 @@ namespace com.limphus.extraction_shooter
         {
             IsAttacking = true;
 
-            OnStartAttack?.Invoke(this, new EventArgs { });
+            OnStartAttack?.Invoke(this, EventArgs.Empty);
 
             Attack();
         }
 
         private void Attack()
         {
-            OnAttack?.Invoke(this, new EventArgs { });
+            OnAttack?.Invoke(this, EventArgs.Empty);
 
             if (weaponRecoil) weaponRecoil.Recoil();
 
@@ -116,7 +121,7 @@ namespace com.limphus.extraction_shooter
 
         private void EndAttack()
         {
-            OnEndAttack?.Invoke(this, new EventArgs { });
+            OnEndAttack?.Invoke(this, EventArgs.Empty);
 
             IsAttacking = false;
         }
@@ -144,7 +149,7 @@ namespace com.limphus.extraction_shooter
 
         private void EndReload()
         {
-            OnEndReload?.Invoke(this, new EventArgs { });
+            OnEndReload?.Invoke(this, EventArgs.Empty);
 
             IsReloading = false;
         }

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using com.limphus.utilities;
 
 namespace com.limphus.extraction_shooter
 {
@@ -41,6 +43,9 @@ namespace com.limphus.extraction_shooter
 
         //private List<SpawnPoint> bossSpawnPoints = new List<SpawnPoint>();
         //private List<SpawnPoint> turretSpawnPoints = new List<SpawnPoint>();
+
+        public event EventHandler<EventArgs> OnStartWave, OnEndWave;
+        public event EventHandler<Events.OnIntChangedEventArgs> WaveChanged;
 
         protected virtual void Awake()
         {
@@ -126,6 +131,8 @@ namespace com.limphus.extraction_shooter
         {
             ChangeSpawnState(SpawnState.SPAWNING);
 
+            OnStartWave?.Invoke(this, EventArgs.Empty);
+
             yield return new WaitForSeconds(1f); //gonna put in a lil buffer here
 
             //loop to spawn all of the enemies over time
@@ -152,7 +159,7 @@ namespace com.limphus.extraction_shooter
             //THEN USE ONE OF *THOSE* TO SPAWN AN ENEMY
 
             //pick a random spawn point, and call the spawn function on it!
-            SpawnPoint sp = spawnPoints[Random.Range(0, spawnPoints.Count)];
+            SpawnPoint sp = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
 
             //we'll also add the spawned enemy to our list!
             enemies.Add(sp.Spawn().GetComponent<AIBase>());
@@ -167,6 +174,8 @@ namespace com.limphus.extraction_shooter
 
         protected void EndWave()
         {
+            OnEndWave?.Invoke(this, EventArgs.Empty);
+
             Debug.Log("Wave " + (currentWave + 1) + " Completed");
 
             ChangeSpawnState(SpawnState.COUNTING);
@@ -180,10 +189,17 @@ namespace com.limphus.extraction_shooter
         {
             if (currentWave >= waves.Length - 1)
             {
-                currentWave = 0; Debug.Log("ALL WAVES COMPLETE! Looping..."); //need to remove this loop thingy in the future, as we want inf. waves
+                currentWave = 0; Debug.Log("ALL WAVES COMPLETE! Looping...");
             }
 
             else currentWave++;
+
+            OnWaveChanged(new Events.OnIntChangedEventArgs { i = currentWave + 1 });
+        }
+
+        protected virtual void OnWaveChanged(Events.OnIntChangedEventArgs e)
+        {
+            WaveChanged?.Invoke(this, e);
         }
     }
 }
