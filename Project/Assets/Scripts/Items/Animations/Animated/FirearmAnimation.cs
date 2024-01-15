@@ -31,7 +31,26 @@ namespace com.limphus.extraction_shooter
             GameManager.PlayerController.OnMoveChanged += PlayerController_OnMoveChanged;
             GameManager.PlayerController.OnRunChanged += PlayerController_OnRunChanged;
             GameManager.PlayerController.OnCrouchChanged += PlayerController_OnCrouchChanged;
+
+            //GameManager.PlayerController.OnJump += PlayerController_OnJump;
+            //GameManager.PlayerController.OnGroundedChanged += PlayerController_OnGroundedChanged;
         }
+
+        //private void PlayerController_OnGroundedChanged(object sender, Events.OnBoolChangedEventArgs e)
+        //{
+        //    SetParamater(IS_GROUNDED, e.i);
+        //
+        //    if (e.i)
+        //    {
+        //        SetTrigger(JUMP, false); //basically, if we land we'll reset this trigger
+        //    
+        //        Debug.Log("landing!!");
+        //    }
+        //}
+        //private void PlayerController_OnJump(object sender, System.EventArgs e)
+        //{
+        //    SetTrigger(JUMP, true);
+        //}
 
         private void PlayerController_OnCrouchChanged(object sender, Events.OnBoolChangedEventArgs e)
         {

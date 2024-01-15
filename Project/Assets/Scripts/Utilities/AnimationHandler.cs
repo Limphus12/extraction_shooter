@@ -56,6 +56,5 @@ namespace com.limphus.utilities
             if (value) animator.SetTrigger(paramater);
             else animator.ResetTrigger(paramater);
         }
-
     }
 }

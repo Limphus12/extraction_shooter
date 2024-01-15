@@ -79,7 +79,7 @@ namespace com.limphus.extraction_shooter
 
         public bool InUse()
         {
-            return IsAttacking && IsReloading;
+            return IsAttacking || IsReloading;
         }
 
         public void StartAttack()

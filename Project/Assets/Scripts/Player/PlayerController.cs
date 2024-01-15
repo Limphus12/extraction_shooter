@@ -57,13 +57,16 @@ namespace com.limphus.extraction_shooter
         private float rotationX = 0, originalStepOffset, currentSpeed, currentCeilingRaycast, currentGroundRaycast;
         private bool isJumping, isCoyoteTime;
 
-        public event EventHandler<Events.OnBoolChangedEventArgs> OnMoveChanged, OnRunChanged, OnCrouchChanged;
+        public event EventHandler<Events.OnBoolChangedEventArgs> OnMoveChanged, OnRunChanged, OnCrouchChanged, OnGroundedChanged;
+        public event EventHandler<EventArgs> OnJump;
+
+        public bool CanRun { get; set; }
+
+
 
         public bool IsCrouching { get; private set; }
         public bool IsRunning { get; private set; }
-
         public float CurrentHeight { get; private set; }
-
         public bool Grounded { get; private set; }
         public bool WasGrounded { get; private set; }
         public bool IsMoving { get; private set; }
@@ -96,7 +99,7 @@ namespace com.limphus.extraction_shooter
 
             //else if we're only pressing the run key and we have the space to stand (just incase we go from crouching to running)
             //btw not sure if we actually need to do the check? idk. EDIT, NO CEILING CHECK, AS WE CAN RUN WHILST CROUCHING
-            else if (Input.GetKey(runKey)) //add a stamina check later on (DONE)
+            else if (Input.GetKey(runKey) && CanRun) //add a stamina check later on (DONE)
             {
                 Run();
             }
@@ -155,6 +158,8 @@ namespace com.limphus.extraction_shooter
                 if (Input.GetButton("Jump") && canMove)
                 {
                     moveDirection.y = jumpSpeed;
+
+                    OnJump?.Invoke(this, EventArgs.Empty);
                 }
             }
 
@@ -365,26 +370,28 @@ namespace com.limphus.extraction_shooter
             else return false;
         }
 
+        private bool previousGrounded;
+
         bool HitGround()
         {
             //raycast downwards from our center
             if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, currentGroundRaycast))
             {
-                if (hit.transform != transform)
-                {
-                    Grounded = true; return Grounded;
-                }
+                if (hit.transform != transform) Grounded = true;
 
-                else
-                {
-                    Grounded = false; return Grounded;
-                }
+                else Grounded = false;
             }
 
-            else
+            else Grounded = false;
+
+            if (previousGrounded != Grounded)
             {
-                Grounded = false; return Grounded;
+                OnGroundedChanged?.Invoke(this, new Events.OnBoolChangedEventArgs { i = Grounded });
+
+                previousGrounded = Grounded;
             }
+
+            return Grounded;
         }
 
         #endregion
@@ -431,5 +438,12 @@ namespace com.limphus.extraction_shooter
                 Gizmos.DrawRay(transform.position, -transform.up * currentGroundRaycast);
             }
         }
+    }
+
+    public struct PlayerControllerInputs 
+    {
+        public Vector2 vertical, horizontal, cameraLean;
+
+        public bool jump, crouch, run;
     }
 }

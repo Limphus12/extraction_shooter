@@ -9449,6 +9449,7 @@ GameObject:
   - component: {fileID: 5358056577268887823}
   - component: {fileID: 7853232161464160384}
   - component: {fileID: 3699601846330564012}
+  - component: {fileID: 7174145635068521374}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -9523,7 +9524,7 @@ MonoBehaviour:
   crouchingCameraPosition: {x: 0, y: 0, z: 0}
   cameraSmoothRate: 5
   runKey: 304
-  crouchKey: 99
+  crouchKey: 306
   debug: 0
 --- !u!114 &7853232161464160384
 MonoBehaviour:
@@ -9555,6 +9556,22 @@ MonoBehaviour:
   interactionRange: 2
   interactionKey: 101
   raycastPoint: {fileID: 1154132035860330907}
+--- !u!114 &7174145635068521374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5358056577268887821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7092db9903261a148933046b12ce1c69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireKey: 0
+  aimKey: 1
+  reloadKey: 114
+  meleeKey: 118
 --- !u!1 &5358056577461103855
 GameObject:
   m_ObjectHideFlags: 0
@@ -10048,7 +10065,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6822713637482451981}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1486813d211149a4a93196b1f76de1fe, type: 3}
   m_Name: 

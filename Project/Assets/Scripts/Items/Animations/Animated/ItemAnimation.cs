@@ -17,6 +17,9 @@ namespace com.limphus.extraction_shooter
         protected const string IS_WALKING = "isWalking";
         protected const string IS_RUNNING = "isRunning";
         protected const string IS_CROUCHING = "isCrouching";
+        protected const string IS_GROUNDED = "isGrounded";
+
+        protected const string JUMP = "Jump";
 
         public void PlayIdle() => PlayAnimation(IDLE);
         public void PlayRunning() => PlayAnimation(RUNNING);
