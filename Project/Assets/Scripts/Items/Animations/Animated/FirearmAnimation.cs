@@ -27,6 +27,25 @@ namespace com.limphus.extraction_shooter
 
             firearm.OnStartReload += Firearm_OnStartReload;
             firearm.OnEndReload += Firearm_OnEndReload;
+
+            GameManager.PlayerController.OnMoveChanged += PlayerController_OnMoveChanged;
+            GameManager.PlayerController.OnRunChanged += PlayerController_OnRunChanged;
+            GameManager.PlayerController.OnCrouchChanged += PlayerController_OnCrouchChanged;
+        }
+
+        private void PlayerController_OnCrouchChanged(object sender, Events.OnBoolChangedEventArgs e)
+        {
+            SetParamater(IS_CROUCHING, e.i);
+        }
+
+        private void PlayerController_OnRunChanged(object sender, Events.OnBoolChangedEventArgs e)
+        {
+            SetParamater(IS_RUNNING, e.i);
+        }
+
+        private void PlayerController_OnMoveChanged(object sender, Events.OnBoolChangedEventArgs e)
+        {
+            SetParamater(IS_MOVING, e.i);
         }
 
         private void Firearm_OnStartReload(object sender, Events.OnBoolChangedEventArgs e)

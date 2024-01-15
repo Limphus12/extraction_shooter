@@ -16,10 +16,7 @@ namespace com.limphus.utilities
             Init();
         }
 
-        protected virtual void Init()
-        {
-
-        }
+        protected virtual void Init() { }
 
         protected void PlayAnimation(string newState)
         {

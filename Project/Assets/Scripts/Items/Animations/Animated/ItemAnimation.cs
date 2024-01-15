@@ -8,10 +8,15 @@ namespace com.limphus.extraction_shooter
 {
     public class ItemAnimation : AnimationHandler
     {
-        const string IDLE = "idle";
-        const string RUNNING = "running";
-        const string EQUIP = "equip";
-        const string DEEQUIP = "deequip";
+        protected const string IDLE = "idle";
+        protected const string RUNNING = "running";
+        protected const string EQUIP = "equip";
+        protected const string DEEQUIP = "deequip";
+
+        protected const string IS_MOVING = "isMoving";
+        protected const string IS_WALKING = "isWalking";
+        protected const string IS_RUNNING = "isRunning";
+        protected const string IS_CROUCHING = "isCrouching";
 
         public void PlayIdle() => PlayAnimation(IDLE);
         public void PlayRunning() => PlayAnimation(RUNNING);

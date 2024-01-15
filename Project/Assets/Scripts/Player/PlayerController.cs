@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using com.limphus.utilities;
 
 namespace com.limphus.extraction_shooter
 {
-    public enum PlayerMovementState { WALKING, RUNNING, CROUCHING }
-
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
@@ -58,6 +57,8 @@ namespace com.limphus.extraction_shooter
         private float rotationX = 0, originalStepOffset, currentSpeed, currentCeilingRaycast, currentGroundRaycast;
         private bool isJumping, isCoyoteTime;
 
+        public event EventHandler<Events.OnBoolChangedEventArgs> OnMoveChanged, OnRunChanged, OnCrouchChanged;
+
         public bool IsCrouching { get; private set; }
         public bool IsRunning { get; private set; }
 
@@ -87,18 +88,6 @@ namespace com.limphus.extraction_shooter
 
         void Inputs()
         {
-            //if were not pressing the crouch key, and we have the room to stand
-            if (!Input.GetKey(crouchKey) && !HitCeiling())
-            {
-                Stand();
-            }
-
-            //else if we're pressing the crouch key
-            else if (Input.GetKey(crouchKey))
-            {
-                Crouch();
-            }
-
             //if we're not pressing the run key, then walk (sets our speed to either crouch speed or walk speed)
             if (!Input.GetKey(runKey))
             {
@@ -110,6 +99,18 @@ namespace com.limphus.extraction_shooter
             else if (Input.GetKey(runKey)) //add a stamina check later on (DONE)
             {
                 Run();
+            }
+
+            //if were not pressing the crouch key, and we have the room to stand
+            if (!Input.GetKey(crouchKey) && !HitCeiling() || IsRunning)
+            {
+                Stand();
+            }
+
+            //else if we're pressing the crouch key (and we're not running)
+            else if (Input.GetKey(crouchKey) && !IsRunning)
+            {
+                Crouch();
             }
 
             CalculateMovement();
@@ -132,6 +133,8 @@ namespace com.limphus.extraction_shooter
 
             if (curSpeedX == 0 && curSpeedZ == 0) IsMoving = false;
             else IsMoving = true;
+
+            OnMoveChanged?.Invoke(this, new Events.OnBoolChangedEventArgs { i = IsMoving });
 
             float movementDirectionY = moveDirection.y;
             moveDirection = (forward * curSpeedZ) + (right * curSpeedX);
@@ -250,21 +253,14 @@ namespace com.limphus.extraction_shooter
 
         #region Stance Methods
 
-        public PlayerMovementState GetMovementState()
-        {
-            if (IsCrouching) return PlayerMovementState.CROUCHING;
-
-            else if (IsRunning && IsMoving) return PlayerMovementState.RUNNING;
-
-            else return PlayerMovementState.WALKING;
-        }
-
         void Crouch()
         {
             IsCrouching = true;
 
             ChangeStance(crouchingHeight, crouchingCenter, crouchingCameraPosition);
             ChangeSpeed(crouchSpeed);
+
+            OnCrouchChanged?.Invoke(this, new Events.OnBoolChangedEventArgs { i = IsCrouching });
         }
 
         void Stand()
@@ -272,7 +268,8 @@ namespace com.limphus.extraction_shooter
             IsCrouching = false;
 
             ChangeStance(standingHeight, standingCenter, standingCameraPosition);
-            ChangeSpeed(walkSpeed);
+
+            OnCrouchChanged?.Invoke(this, new Events.OnBoolChangedEventArgs { i = IsCrouching });
         }
 
         void Run()
@@ -291,9 +288,10 @@ namespace com.limphus.extraction_shooter
             {
                 IsCrouching = false;
 
-                ChangeStance(standingHeight, standingCenter, standingCameraPosition);
                 ChangeSpeed(runSpeed);
             }
+
+            OnRunChanged?.Invoke(this, new Events.OnBoolChangedEventArgs { i = IsRunning });
         }
 
         void Walk()
@@ -311,6 +309,8 @@ namespace com.limphus.extraction_shooter
             {
                 ChangeSpeed(crouchSpeed);
             }
+
+            OnRunChanged?.Invoke(this, new Events.OnBoolChangedEventArgs { i = IsRunning });
         }
 
         private Vector3 previousCameraPos;

@@ -29,14 +29,16 @@ namespace com.limphus.extraction_shooter
             //grab references
             interaction = GameManager.Player.GetComponent<InteractionScript>();
             firearm = GameManager.Player.GetComponentInChildren<Firearm>();
-            waveSystem = GameObject.FindObjectOfType<WaveSystem>();
+            waveSystem = FindObjectOfType<WaveSystem>();
 
             //sub to events
             interaction.OnInteractionCheck += Interaction_OnInteractionCheck;
+            waveSystem.WaveChanged += WaveSystem_OnWaveChanged;
+
+            //firearm events
             firearm.OnAmmoChanged += Firearm_OnAmmoChanged;
             firearm.OnAim += Firearm_OnAim;
             firearm.OnEnemyHit += Firearm_OnEnemyHit;
-            waveSystem.WaveChanged += WaveSystem_OnWaveChanged;
         }
 
         private void Firearm_OnEnemyHit(object sender, Events.OnRaycastHitEventArgs e)
