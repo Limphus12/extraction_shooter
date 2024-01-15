@@ -24,10 +24,10 @@ namespace com.limphus.extraction_shooter
             //ah, and speed too! because we wanna be able to go from walking to running over time!!
         }
 
-        [SerializeField] private Wave[] waves;
-        protected static int currentWave;
+        [SerializeField] protected Wave[] waves;
+        protected static int currentWave = -1;
 
-        [SerializeField] private float timeBetweenWaves = 30f;
+        [SerializeField] protected float timeBetweenWaves = 30f;
 
         //[SerializeField] private bool loopWaves = false;
 
@@ -44,7 +44,7 @@ namespace com.limphus.extraction_shooter
         //private List<SpawnPoint> bossSpawnPoints = new List<SpawnPoint>();
         //private List<SpawnPoint> turretSpawnPoints = new List<SpawnPoint>();
 
-        public event EventHandler<EventArgs> OnStartWave, OnEndWave;
+        public event EventHandler<EventArgs> OnStartWave, WaveEnded;
         public event EventHandler<Events.OnIntChangedEventArgs> WaveChanged;
 
         protected virtual void Awake()
@@ -98,7 +98,12 @@ namespace com.limphus.extraction_shooter
                     //TODO: add event for wave countdown
 
                     //if we're not in the spawning state, and we've reached the end of the wave countdown, start the spawning!
-                    if (waveCountDown <= 0) StartCoroutine(SpawnWave(waves[currentWave]));
+                    if (waveCountDown <= 0)
+                    {
+                        NextWave();
+
+                        StartCoroutine(SpawnWave(waves[currentWave]));
+                    }
 
                     break;
 
@@ -107,7 +112,7 @@ namespace com.limphus.extraction_shooter
             }
         }
 
-        private void ChangeSpawnState(SpawnState newState)
+        protected void ChangeSpawnState(SpawnState newState)
         {
             if (state == newState) return;
 
@@ -172,17 +177,15 @@ namespace com.limphus.extraction_shooter
             //OR, WE COULD JUST CHECK IF THE ENEMY GAME OBJECT IS NOT NULL, AND CLEAN UP THE LIST EVERY FRAME IG?
         }
 
-        protected void EndWave()
+        protected virtual void EndWave()
         {
-            OnEndWave?.Invoke(this, EventArgs.Empty);
+            OnWaveEnded();
 
             Debug.Log("Wave " + (currentWave + 1) + " Completed");
 
             ChangeSpawnState(SpawnState.COUNTING);
 
             waveCountDown = timeBetweenWaves;
-
-            NextWave();
         }
 
         protected virtual void NextWave()
@@ -200,6 +203,11 @@ namespace com.limphus.extraction_shooter
         protected virtual void OnWaveChanged(Events.OnIntChangedEventArgs e)
         {
             WaveChanged?.Invoke(this, e);
+        }
+
+        protected virtual void OnWaveEnded()
+        {
+            WaveEnded?.Invoke(this, EventArgs.Empty);
         }
     }
 }

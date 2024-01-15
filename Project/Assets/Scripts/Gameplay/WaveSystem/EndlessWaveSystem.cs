@@ -58,7 +58,12 @@ namespace com.limphus.extraction_shooter
 
                     //if we're not in the spawning state, and we've reached the end of the wave countdown, start the spawning!
                     //also! we've changed this to pick a wave via the generate wave method!
-                    if (waveCountDown <= 0) StartCoroutine(SpawnWave(GenerateWave()));
+                    if (waveCountDown <= 0)
+                    {
+                        NextWave();
+
+                        StartCoroutine(SpawnWave(GenerateWave()));
+                    }
 
                     break;
 
@@ -92,11 +97,6 @@ namespace com.limphus.extraction_shooter
 
             //need to send off an event for the next wave
             OnWaveChanged(new Events.OnIntChangedEventArgs { i = currentWave + 1 });
-        }
-
-        protected override void OnWaveChanged(Events.OnIntChangedEventArgs e)
-        {
-            base.OnWaveChanged(e);
         }
     }
 }
