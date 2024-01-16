@@ -128,7 +128,7 @@ namespace com.limphus.extraction_shooter
                 if (enemies[i].IsDead || enemies[i] == null) enemies.RemoveAt(i);
             }
 
-            //simple check; see if we have any more enemies (since we're storing the AIBase class, it should (in the future) account for bosses and other enemy types)
+            //simple check; see if we have any more enemies (since we're storing the ~~AIBase~~ EntityStats class, it should (in the future) account for bosses and other enemy types, since they'll be using entity stats too)
             return enemies.Count > 0;
         }
 

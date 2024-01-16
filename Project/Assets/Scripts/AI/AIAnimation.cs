@@ -16,7 +16,9 @@ public class AIAnimation : AnimationHandler
 
     protected const string ATTACK = "Attack";
     protected const string ATTACK_BLEND = "AttackBlend";
+
     protected const string KILL = "Kill";
+    protected const string KILL_BLEND = "KillBlend";
 
 
 
@@ -35,9 +37,10 @@ public class AIAnimation : AnimationHandler
 
     private void Ai_OnStartAttack(object sender, System.EventArgs e)
     {
-        SetTrigger(ATTACK, true);
+        //can use this for randomized attacks via blend tree
+        SetParamater(ATTACK_BLEND, (float)Random.Range(0, 3));
 
-        SetParamater(ATTACK_BLEND, (float)Random.Range(0, 3)); //can use this for randomized attacks via blend tree
+        SetTrigger(ATTACK, true);
     }
 
     private void Ai_OnEndAttack(object sender, System.EventArgs e)
@@ -52,7 +55,8 @@ public class AIAnimation : AnimationHandler
 
     private void EnemyStats_OnKill(object sender, System.EventArgs e)
     {
-        //trigger a death animation (potentially choose a random one)
+        //can use this for randomized deaths via blend tree
+        SetParamater(KILL_BLEND, (float)Random.Range(0, 3));
 
         SetTrigger(KILL, true);
     }
