@@ -14,8 +14,8 @@ namespace com.limphus.extraction_shooter
         [SerializeField] private float rof;
 
         [Header("Reloading")]
-        [SerializeField] private float reloadTime;
-        [SerializeField] private float partialReloadTime, fullReloadTime;
+        [SerializeField] private float partialReloadTime;   
+        [SerializeField] private float fullReloadTime;
         [SerializeField] private int maxAmmo;
 
         private WeaponRecoil weaponRecoil;
@@ -79,7 +79,7 @@ namespace com.limphus.extraction_shooter
 
         public bool InUse()
         {
-            return IsAttacking || IsReloading;
+            return IsAttacking && IsReloading;
         }
 
         public void StartAttack()

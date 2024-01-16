@@ -10,7 +10,7 @@ namespace com.limphus.extraction_shooter
         {
             base.Kill();
 
-            Destroy(gameObject);
+            Destroy(gameObject, 10f);
         }
     }
 }

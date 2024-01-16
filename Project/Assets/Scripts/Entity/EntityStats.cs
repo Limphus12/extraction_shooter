@@ -18,7 +18,7 @@ namespace com.limphus.extraction_shooter
         //then just load in the stats from that scriptable object...
 
         public event EventHandler<Events.OnIntChangedEventArgs> OnHealthChanged;
-        public event EventHandler<EventArgs> OnHealthDepleted, OnHealthReplenished;
+        public event EventHandler<EventArgs> OnHealthDepleted, OnHealthReplenished, OnKill;
 
         private void Awake() => InitVariables();
 
@@ -102,6 +102,8 @@ namespace com.limphus.extraction_shooter
         protected virtual void Kill()
         {
             IsDead = true;
+
+            OnKill?.Invoke(this, EventArgs.Empty);
 
             //currently we're only debug logging lmao.
             //Debug.Log("Entity (" + gameObject.name + ") is Dead");

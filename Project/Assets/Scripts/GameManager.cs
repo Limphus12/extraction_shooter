@@ -9,6 +9,7 @@ namespace com.limphus.extraction_shooter
         public static GameObject Player;
         public static Camera PlayerCamera;
         public static PlayerController PlayerController;
+        public static PlayerStats PlayerStats;
 
         public static int Supplies { get; private set; }
         public static int TempSupplies { get; private set; }
@@ -42,6 +43,7 @@ namespace com.limphus.extraction_shooter
             Player = GameObject.FindGameObjectWithTag("Player");
             PlayerCamera = Camera.main;
             PlayerController = Player.GetComponent<PlayerController>();
+            PlayerStats = Player.GetComponent<PlayerStats>();
         }
     }
 }
