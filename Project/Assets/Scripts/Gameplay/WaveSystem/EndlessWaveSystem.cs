@@ -20,6 +20,12 @@ namespace com.limphus.extraction_shooter
         [SerializeField] private Vector2 enemyCountMinMax;
         [SerializeField] private Vector2 spawnRateMinMax;
 
+        [Space]
+        [SerializeField] private float baseEnemySpeed = 1f;
+        [SerializeField] private float speedMultiplyAmount = 2f;
+
+        [SerializeField] private Vector2 speedMinMax;
+
         public static int GetCurrentWave() => currentWave;
 
         protected override void Awake()
@@ -28,6 +34,7 @@ namespace com.limphus.extraction_shooter
 
             currentEnemyCount = baseEnemyCount;
             currentSpawnRate = baseSpawnRate;
+            currentEnemySpeed = baseEnemySpeed;
         }
 
         protected override void CheckWave()
@@ -72,7 +79,7 @@ namespace com.limphus.extraction_shooter
             }
         }
 
-        private float currentEnemyCount, currentSpawnRate;
+        private float currentEnemyCount, currentSpawnRate, currentEnemySpeed;
 
         private Wave GenerateWave()
         {
@@ -85,6 +92,21 @@ namespace com.limphus.extraction_shooter
             return wave;
         }
 
+        protected override void SpawnEnemy()
+        {
+            //TODO: LOOP THROUGH SP AND FIND ONES WITHIN THE SPAWN RANGE (I.E. 20-40m AWAY)
+            //THEN USE ONE OF *THOSE* TO SPAWN AN ENEMY
+
+            //pick a random spawn point, and call the spawn function on it!
+            SpawnPoint sp = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
+
+            //we'll also add the spawned enemy to our list!
+            EntityStats enemy = sp.Spawn().GetComponent<EntityStats>(); enemies.Add(enemy);
+
+            //and modify the speed of the enemy
+            enemy.SetCurrentSpeed(currentEnemySpeed);
+        }
+
         protected override void NextWave()
         {
             //current enemy count; multiplying and clamping!
@@ -92,6 +114,9 @@ namespace com.limphus.extraction_shooter
 
             //current spawn rate; dividing and clamping!
             currentSpawnRate /= rateDivisionAmount; currentSpawnRate = Mathf.Clamp(currentSpawnRate, spawnRateMinMax.x, spawnRateMinMax.y);
+
+            //current enemy speed; multiplying and clamping!
+            currentEnemySpeed *= speedMultiplyAmount; currentEnemySpeed = Mathf.Clamp(currentEnemySpeed, speedMinMax.x, speedMinMax.y);
 
             currentWave++;
 

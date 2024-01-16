@@ -4185,6 +4185,9 @@ MonoBehaviour:
   rateDivisionAmount: 1.05
   enemyCountMinMax: {x: 10, y: 50}
   spawnRateMinMax: {x: 1, y: 5}
+  baseEnemySpeed: 1
+  speedMultiplyAmount: 1.1
+  speedMinMax: {x: 1, y: 4}
 --- !u!43 &1536418926
 Mesh:
   m_ObjectHideFlags: 0

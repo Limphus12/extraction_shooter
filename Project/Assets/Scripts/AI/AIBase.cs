@@ -9,13 +9,6 @@ namespace com.limphus.extraction_shooter
 {
     public class AIBase : MonoBehaviour
     {
-        [Header("AI Attributes - Movement")]
-        [SerializeField] private float movementSpeed = 3f;
-
-        [Header("AI Attributes - Attacking")]
-        [SerializeField] private float attackDistance = 2f;
-        [SerializeField] private float attackDelay = 1f, endAttackDelay = 1f, attackCooldown = 1f;
-
         private NavMeshAgent agent;
 
         private float targetDistance;
@@ -26,7 +19,7 @@ namespace com.limphus.extraction_shooter
 
         private bool isAttacking = false, canAttack = true;
 
-        [SerializeField] protected EnemyStats enemyStats;
+        protected EnemyStats stats;
 
         public event EventHandler<EventArgs> OnStartAttack, OnAttack, OnEndAttack;
         public event EventHandler<Events.OnBoolChangedEventArgs> OnMoveChanged;
@@ -38,8 +31,6 @@ namespace com.limphus.extraction_shooter
 
         private void Init()
         {
-            if (!enemyStats) enemyStats = GetComponent<EnemyStats>();
-
             agent = GetComponent<NavMeshAgent>();
 
             targetTransform = GameManager.Player.transform;
@@ -47,7 +38,15 @@ namespace com.limphus.extraction_shooter
             InvokeRepeating(nameof(CheckDestination), 0f, 0.2f);
             InvokeRepeating(nameof(SetDestination), 0f, 0.2f);
 
-            enemyStats.OnKill += EnemyStats_OnKill;
+            if (!stats) stats = GetComponent<EnemyStats>();
+
+            stats.OnKill += EnemyStats_OnKill;
+            stats.OnSpeedChanged += EnemyStats_OnSpeedChanged;
+        }
+
+        private void EnemyStats_OnSpeedChanged(object sender, EventArgs e)
+        {
+            SetAgentSpeed(stats.GetCurrentSpeed());
         }
 
         private void EnemyStats_OnKill(object sender, EventArgs e)
@@ -62,21 +61,21 @@ namespace com.limphus.extraction_shooter
 
             SetAgentSpeed(0f);
 
-            Invoke(nameof(Attack), attackDelay);
+            Invoke(nameof(Attack), stats.GetAttackStats().attackDelay);
 
             OnStartAttack?.Invoke(this, EventArgs.Empty);
         }
 
         private void Attack()
         {
-            if (TargetDistance() < attackDistance)
+            if (TargetDistance() < stats.GetAttackStats().attackDistance)
             {
                 //deal damage to the player; grab the player stats from the game manager and do that!
 
                 GameManager.PlayerStats.Damage(1);
             }
 
-            Invoke(nameof(EndAttack), endAttackDelay);
+            Invoke(nameof(EndAttack), stats.GetAttackStats().endAttackDelay);
 
             OnAttack?.Invoke(this, EventArgs.Empty);
         }
@@ -86,9 +85,9 @@ namespace com.limphus.extraction_shooter
             isAttacking = false;
             canAttack = false;
 
-            SetAgentSpeed(movementSpeed);
+            SetAgentSpeed(stats.GetCurrentSpeed());
 
-            Invoke(nameof(ResetAttack), attackCooldown);
+            Invoke(nameof(ResetAttack), stats.GetAttackStats().attackCooldown);
 
             OnEndAttack?.Invoke(this, EventArgs.Empty);
         }
@@ -107,7 +106,7 @@ namespace com.limphus.extraction_shooter
         {
             targetPosition = targetTransform.position;
 
-            if (TargetDistance() <= attackDistance && !isAttacking && canAttack)
+            if (TargetDistance() <= stats.GetAttackStats().attackDistance && !isAttacking && canAttack)
             {
                 StartAttack();
             }

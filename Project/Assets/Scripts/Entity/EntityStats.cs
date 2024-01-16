@@ -8,9 +8,13 @@ namespace com.limphus.extraction_shooter
 {
     public class EntityStats : MonoBehaviour, IDamageable
     {
-        [Header("Variables - Health")]
+        [Header("Attributes - Health")]
         [SerializeField] protected int maxHealth = 100;
         protected int currentHealth;
+
+        [Header("Attributes - Movement")]
+        [SerializeField] protected float moveSpeed;
+        protected float currentSpeed;
 
         public bool IsDead { get; private set; }
 
@@ -18,7 +22,7 @@ namespace com.limphus.extraction_shooter
         //then just load in the stats from that scriptable object...
 
         public event EventHandler<Events.OnIntChangedEventArgs> OnHealthChanged;
-        public event EventHandler<EventArgs> OnHealthDepleted, OnHealthReplenished, OnKill;
+        public event EventHandler<EventArgs> OnHealthDepleted, OnHealthReplenished, OnKill, OnSpeedChanged;
 
         private void Awake() => InitVariables();
 
@@ -27,7 +31,11 @@ namespace com.limphus.extraction_shooter
             SetCurrentHealth(maxHealth);
 
             IsDead = false;
+
+            currentSpeed = moveSpeed;
         }
+
+        #region Health
 
         public bool CanReplenishHealth()
         {
@@ -107,6 +115,16 @@ namespace com.limphus.extraction_shooter
 
             //currently we're only debug logging lmao.
             //Debug.Log("Entity (" + gameObject.name + ") is Dead");
+        }
+
+        #endregion
+
+        public float GetCurrentSpeed() => currentSpeed;
+        public void SetCurrentSpeed(float amount)
+        {
+            currentSpeed = amount;
+
+            OnSpeedChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

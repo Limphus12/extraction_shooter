@@ -345,12 +345,12 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 2
-  m_Acceleration: 8
+  m_Acceleration: 12
   avoidancePriority: 50
-  m_AngularSpeed: 1440
-  m_StoppingDistance: 0.25
+  m_AngularSpeed: 14400
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
@@ -383,6 +383,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  moveSpeed: 1
+  attackStats:
+    attackDistance: 2
+    attackDelay: 0.7
+    endAttackDelay: 0.7
+    attackCooldown: 1.2
 --- !u!114 &597799989585303295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,12 +401,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f5144da738e8f46bb695ad7dc2a879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 1
-  attackDistance: 2.25
-  attackDelay: 0.6
-  endAttackDelay: 0.6
-  attackCooldown: 0.5
-  enemyStats: {fileID: 1712286977374051024}
 --- !u!114 &9178244401284052359
 MonoBehaviour:
   m_ObjectHideFlags: 0

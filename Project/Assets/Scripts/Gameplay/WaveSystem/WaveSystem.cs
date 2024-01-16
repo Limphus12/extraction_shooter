@@ -158,7 +158,7 @@ namespace com.limphus.extraction_shooter
             yield break;
         }
 
-        private void SpawnEnemy()
+        protected virtual void SpawnEnemy()
         {
             //TODO: LOOP THROUGH SP AND FIND ONES WITHIN THE SPAWN RANGE (I.E. 20-40m AWAY)
             //THEN USE ONE OF *THOSE* TO SPAWN AN ENEMY
@@ -167,14 +167,9 @@ namespace com.limphus.extraction_shooter
             SpawnPoint sp = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
 
             //we'll also add the spawned enemy to our list!
-            enemies.Add(sp.Spawn().GetComponent<EntityStats>());
+            EntityStats enemy = sp.Spawn().GetComponent<EntityStats>();
 
-            //TODO: SUBSCRIBE TO THE ENEMY'S ONDEATH EVENT
-            //WE CAN THEN MAKE SURE TO REMOVE IT FROM THE LIST
-            //AND CALL A CHECK TO SEE IF THERE'S ANY MORE ENEMIES LEFT
-            //THEN POTENTIALLY END THE ROUND
-
-            //OR, WE COULD JUST CHECK IF THE ENEMY GAME OBJECT IS NOT NULL, AND CLEAN UP THE LIST EVERY FRAME IG?
+            enemies.Add(enemy);
         }
 
         protected virtual void EndWave()
