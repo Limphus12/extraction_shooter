@@ -31,7 +31,6 @@ namespace com.limphus.extraction_shooter
         public event EventHandler<EventArgs> OnStartAttack, OnAttack, OnEndAttack;
         public event EventHandler<Events.OnBoolChangedEventArgs> OnMoveChanged;
 
-
         private void Awake()
         {
             Init();
@@ -53,10 +52,8 @@ namespace com.limphus.extraction_shooter
 
         private void EnemyStats_OnKill(object sender, EventArgs e)
         {
-            //disable scripts when we die
-
-            agent.enabled = false;
-            enabled = false;
+            //cancel invokes and disable scripts when we die
+            CancelInvoke(); agent.enabled = false; enabled = false;
         }
 
         private void StartAttack()

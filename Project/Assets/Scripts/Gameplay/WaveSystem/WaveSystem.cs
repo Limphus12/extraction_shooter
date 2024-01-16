@@ -36,7 +36,7 @@ namespace com.limphus.extraction_shooter
         protected SpawnState state;
 
         //gotta keep track of the current enemies
-        protected List<AIBase> enemies = new List<AIBase>();
+        protected List<EntityStats> enemies = new List<EntityStats>();
 
         //a private list of spawn points; populate this in the awake/start method
         protected List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
@@ -125,7 +125,7 @@ namespace com.limphus.extraction_shooter
         {
             for (int i = 0; i < enemies.Count; i++)
             {
-                if (enemies[i] == null) enemies.RemoveAt(i);
+                if (enemies[i].IsDead || enemies[i] == null) enemies.RemoveAt(i);
             }
 
             //simple check; see if we have any more enemies (since we're storing the AIBase class, it should (in the future) account for bosses and other enemy types)
@@ -167,7 +167,7 @@ namespace com.limphus.extraction_shooter
             SpawnPoint sp = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
 
             //we'll also add the spawned enemy to our list!
-            enemies.Add(sp.Spawn().GetComponent<AIBase>());
+            enemies.Add(sp.Spawn().GetComponent<EntityStats>());
 
             //TODO: SUBSCRIBE TO THE ENEMY'S ONDEATH EVENT
             //WE CAN THEN MAKE SURE TO REMOVE IT FROM THE LIST

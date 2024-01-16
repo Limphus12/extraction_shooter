@@ -10,6 +10,8 @@ namespace com.limphus.extraction_shooter
         {
             base.Kill();
 
+            GetComponent<Collider>().enabled = false; //gonna disable the collider on this object
+
             Destroy(gameObject, 10f);
         }
     }
